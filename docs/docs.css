@@ -1,0 +1,485 @@
+/* 文档专用样式 - 继承主样式的基础上扩展 */
+@import url('../styles.css');
+
+/* 文档页面布局 */
+.docs-layout {
+    display: flex;
+    min-height: 100vh;
+    margin-top: 4rem;
+}
+
+/* 侧边栏 */
+.docs-sidebar {
+    width: 280px;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    position: fixed;
+    top: 4rem;
+    left: 0;
+    height: calc(100vh - 4rem);
+    overflow-y: auto;
+    z-index: 100;
+    transition: transform 0.3s ease;
+}
+
+.docs-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.docs-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.docs-sidebar::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.docs-sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-primary);
+}
+
+/* 侧边栏搜索 */
+.sidebar-search {
+    padding: var(--space-lg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-search input {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.sidebar-search input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+.sidebar-search input::placeholder {
+    color: var(--text-muted);
+}
+
+/* 导航菜单 */
+.docs-nav {
+    padding: var(--space-lg) 0;
+}
+
+.nav-section {
+    margin-bottom: var(--space-xl);
+}
+
+.nav-section-title {
+    padding: 0 var(--space-lg);
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.nav-items {
+    list-style: none;
+}
+
+.nav-item {
+    margin-bottom: 2px;
+}
+
+.nav-link {
+    display: block;
+    padding: var(--space-sm) var(--space-lg);
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-right: 3px solid transparent;
+    font-size: 0.95rem;
+}
+
+.nav-link:hover {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border-right-color: var(--accent-primary);
+}
+
+.nav-link.active {
+    background: var(--bg-primary);
+    color: var(--accent-primary);
+    border-right-color: var(--accent-primary);
+    font-weight: 500;
+}
+
+.nav-item .nav-subitems {
+    list-style: none;
+    margin-left: var(--space-lg);
+}
+
+.nav-item .nav-subitems .nav-link {
+    padding-left: var(--space-xl);
+    font-size: 0.9rem;
+}
+
+/* 主内容区域 */
+.docs-main {
+    flex: 1;
+    margin-left: 280px;
+    min-height: calc(100vh - 4rem);
+    background: var(--bg-primary);
+}
+
+.docs-content {
+    max-width: 900px;
+    padding: var(--space-2xl);
+    margin: 0 auto;
+}
+
+/* 文档内容样式 */
+.docs-content h1 {
+    color: var(--text-primary);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-md);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.docs-content h2 {
+    color: var(--text-primary);
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: var(--space-2xl) 0 var(--space-lg) 0;
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.docs-content h3 {
+    color: var(--text-primary);
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: var(--space-xl) 0 var(--space-md) 0;
+}
+
+.docs-content p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-lg);
+}
+
+.docs-content ul, .docs-content ol {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-lg);
+    padding-left: var(--space-xl);
+}
+
+.docs-content li {
+    margin-bottom: var(--space-sm);
+    line-height: 1.6;
+}
+
+.docs-content code {
+    background: var(--bg-secondary);
+    color: var(--accent-primary);
+    padding: 0.2em 0.4em;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+}
+
+.docs-content pre {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+    overflow-x: auto;
+    position: relative;
+}
+
+.docs-content pre code {
+    background: none;
+    color: var(--text-primary);
+    padding: 0;
+}
+
+.docs-content blockquote {
+    border-left: 4px solid var(--accent-primary);
+    background: var(--bg-secondary);
+    padding: var(--space-md) var(--space-lg);
+    margin-bottom: var(--space-lg);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.docs-content blockquote p {
+    margin-bottom: 0;
+    color: var(--text-secondary);
+}
+
+/* 表格样式 */
+.docs-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--space-lg);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.docs-content th,
+.docs-content td {
+    padding: var(--space-md);
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.docs-content th {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.docs-content td {
+    color: var(--text-secondary);
+}
+
+/* 内容导航 */
+.content-nav {
+    position: fixed;
+    right: var(--space-xl);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    max-height: 60vh;
+    overflow-y: auto;
+    z-index: 50;
+}
+
+.content-nav h4 {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.content-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.content-nav li {
+    margin-bottom: var(--space-sm);
+}
+
+.content-nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    display: block;
+    padding: var(--space-xs) 0;
+    transition: color 0.2s ease;
+}
+
+.content-nav a:hover {
+    color: var(--accent-primary);
+}
+
+.content-nav a.active {
+    color: var(--accent-primary);
+    font-weight: 500;
+}
+
+/* 导航按钮（上一页/下一页） */
+.docs-pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--space-3xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--border-color);
+}
+
+.pagination-btn {
+    display: flex;
+    align-items: center;
+    padding: var(--space-md) var(--space-lg);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    max-width: 200px;
+}
+
+.pagination-btn:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--accent-primary);
+    color: var(--text-primary);
+}
+
+.pagination-btn .btn-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.pagination-btn .btn-title {
+    font-weight: 500;
+    margin-top: var(--space-xs);
+}
+
+/* 手机端菜单按钮 */
+.mobile-menu-btn {
+    display: none;
+    position: fixed;
+    bottom: var(--space-xl);
+    right: var(--space-xl);
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px var(--shadow-glow);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-btn:hover {
+    transform: scale(1.1);
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+    .content-nav {
+        display: none;
+    }
+    
+    .docs-content {
+        max-width: none;
+        padding: var(--space-xl);
+    }
+}
+
+@media (max-width: 768px) {
+    .docs-sidebar {
+        transform: translateX(-100%);
+        width: 100%;
+        max-width: 320px;
+    }
+    
+    .docs-sidebar.open {
+        transform: translateX(0);
+    }
+    
+    .docs-main {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .docs-content {
+        padding: var(--space-lg);
+    }
+    
+    .mobile-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .docs-pagination {
+        flex-direction: column;
+        gap: var(--space-md);
+    }
+    
+    .pagination-btn {
+        max-width: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .docs-content h1 {
+        font-size: 2rem;
+    }
+    
+    .docs-content h2 {
+        font-size: 1.5rem;
+    }
+    
+    .docs-content h3 {
+        font-size: 1.25rem;
+    }
+    
+    .docs-content {
+        padding: var(--space-md);
+    }
+    
+    .sidebar-search {
+        padding: var(--space-md);
+    }
+}
+
+/* 代码高亮增强 */
+.docs-content pre {
+    position: relative;
+}
+
+.docs-content pre::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: var(--space-sm);
+    right: var(--space-sm);
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* 告警框样式 */
+.docs-alert {
+    padding: var(--space-md) var(--space-lg);
+    margin-bottom: var(--space-lg);
+    border-radius: var(--radius-md);
+    border-left: 4px solid;
+}
+
+.docs-alert.info {
+    background: rgba(56, 189, 248, 0.1);
+    border-left-color: var(--accent-primary);
+    color: var(--text-secondary);
+}
+
+.docs-alert.warning {
+    background: rgba(251, 191, 36, 0.1);
+    border-left-color: #fbbf24;
+    color: var(--text-secondary);
+}
+
+.docs-alert.danger {
+    background: rgba(239, 68, 68, 0.1);
+    border-left-color: #ef4444;
+    color: var(--text-secondary);
+}
+
+.docs-alert.success {
+    background: rgba(34, 197, 94, 0.1);
+    border-left-color: #22c55e;
+    color: var(--text-secondary);
+}

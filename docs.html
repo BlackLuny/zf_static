@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero Forwarder - 文档中心</title>
+    <link rel="stylesheet" href="docs-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="navbar">
+        <nav class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <div class="logo-icon">Z</div>
+                    <span class="brand-name">Zero Forwarder</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="index.html#features" class="nav-link">产品特性</a>
+                <a href="docs.html" class="nav-link active">文档中心</a>
+                <a href="index.html#install" class="cta-btn">快速开始</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 文档主体 -->
+    <div class="docs-container">
+        <!-- 侧边栏导航 -->
+        <aside class="docs-sidebar">
+            <div class="sidebar-header">
+                <h3>文档导航</h3>
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="搜索文档..." class="search-input">
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-list" id="nav-list">
+                    <!-- 导航将通过JavaScript动态生成 -->
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 主内容区域 -->
+        <main class="docs-main">
+            <div class="docs-content">
+                <div id="markdown-content" class="markdown-body">
+                    <!-- Markdown内容将在这里渲染 -->
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>加载中...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 目录 -->
+            <aside class="docs-toc">
+                <div class="toc-header">
+                    <h4>目录</h4>
+                </div>
+                <nav class="toc-nav" id="toc-nav">
+                    <!-- 目录将通过JavaScript动态生成 -->
+                </nav>
+            </aside>
+        </main>
+    </div>
+
+    <script src="docs-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero Forwarder - 新一代高性能网络转发引擎</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="navbar">
+        <nav class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-icon">Z</div>
+                <span class="brand-name">Zero Forwarder</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features" class="nav-link">产品特性</a>
+                <a href="#docs" class="nav-link">文档中心</a>
+                <a href="docs.html" class="nav-link">文档</a>
+                <a href="#install" class="cta-btn">快速开始</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">新一代高性能网络转发引擎</h1>
+            <p class="hero-description">基于 Rust 内核，集极致性能、金融级安全与高度灵活性于一体，为你提供前所未有的网络连接体验。</p>
+            <div class="hero-actions">
+                <a href="#install" class="btn-primary">一键安装</a>
+                <a href="docs.html" class="btn-secondary">阅读文档</a>
+            </div>
+        </div>
+        <div class="hero-background">
+            <div class="particles"></div>
+        </div>
+    </section>
+
+    <!-- 产品特性网格 -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">为何选择 Zero Forwarder?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Rust 内核</h3>
+                    <p class="feature-description">极致性能，稳定可靠，超低资源占用。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 11V7a6 6 0 0 0-12 0v4a4 4 0 0 0-4 4v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6a4 4 0 0 0-4-4Z" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="12" cy="16" r="2" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">加密 & 0-RTT</h3>
+                    <p class="feature-description">数据安全无忧，连接"零"延迟。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 12h4l2-6 4 12 2-6h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">带宽聚合</h3>
+                    <p class="feature-description">叠加多服务器带宽，速度翻倍。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 1v6m0 6v6" stroke="currentColor" stroke-width="2"/>
+                            <path d="m21 12-6 0m-6 0-6 0" stroke="currentColor" stroke-width="2"/>
+                            <path d="m18.364 5.636-4.243 4.243m-4.242 4.242-4.243 4.243" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">高可用性</h3>
+                    <p class="feature-description">智能负载均衡，连接永不中断。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 3v18h18V3H3zM8 17l-5-5 1.41-1.41L8 14.17l7.59-7.59L17 8l-9 9z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">全方位监控</h3>
+                    <p class="feature-description">实时状态与网络质量图表，尽在掌握。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">多用户系统</h3>
+                    <p class="feature-description">精细化流量、速率控制，轻松共享。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1Z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">安全防火墙</h3>
+                    <p class="feature-description">有效防范协议滥用与恶意连接。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2"/>
+                            <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">灵活组网</h3>
+                    <p class="feature-description">支持自定义出口，满足高级网络需求。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <polyline points="4 17 10 11 4 5" stroke="currentColor" stroke-width="2"/>
+                            <line x1="12" y1="19" x2="20" y2="19" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">一键安装</h3>
+                    <p class="feature-description">极简部署，数分钟内即可上线。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 文档目录 -->
+    <section id="docs" class="docs">
+        <div class="container">
+            <h2 class="section-title">完备的文档中心</h2>
+            <p class="section-subtitle">从快速入门到高级配置，在这里找到你所需要的一切。</p>
+            
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="搜索文档...">
+            </div>
+
+            <div class="docs-grid">
+                <div class="doc-card">
+                    <div class="doc-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4.5 4.5l15 15m0 0V8.25m0 11.25H8.25" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="doc-title">快速上手</h3>
+                    <p class="doc-description">了解 Zero Forwarder 的基本概念，并在 5 分钟内完成你的第一个转发配置。</p>
+                </div>
+                <div class="doc-card">
+                    <div class="doc-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12l2 2 4-4M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c.394 0 .788.025 1.176.074" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="doc-title">核心概念</h3>
+                    <p class="doc-description">深入理解带宽聚合、高可用模式、安全策略等核心功能的工作原理。</p>
+                </div>
+                <div class="doc-card">
+                    <div class="doc-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="doc-title">高级指南</h3>
+                    <p class="doc-description">学习如何进行多用户管理、自定义组网、性能调优等高级操作。</p>
+                </div>
+                <div class="doc-card">
+                    <div class="doc-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="doc-title">配置参考</h3>
+                    <p class="doc-description">查看完整的配置文件详解和所有可用的命令行参数说明。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 安装与最终CTA -->
+    <section id="install" class="install">
+        <div class="container">
+            <h2 class="section-title">即刻开始，体验强大</h2>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-controls">
+                        <span class="control close"></span>
+                        <span class="control minimize"></span>
+                        <span class="control maximize"></span>
+                    </div>
+                    <span class="terminal-title">Terminal</span>
+                </div>
+                <div class="terminal-body">
+                    <div class="command-line">
+                        <span class="prompt">$</span>
+                        <span class="command">bash &lt;(curl -sL https://get.zeroforwarder.com/install.sh)</span>
+                        <button class="copy-btn">复制</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Zero Forwarder</h3>
+                    <p>&copy; 2025 Zero Forwarder. All rights reserved.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#docs">文档</a>
+                    <a href="#features">特性</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
