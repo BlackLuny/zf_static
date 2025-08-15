@@ -41,6 +41,12 @@ function initDocsPage() {
             title: '常见问题',
             path: 'markdown/faq.md',
             category: '帮助支持'
+        },
+        {
+            name: 'ix-guide.md',
+            title: 'IX使用说明',
+            path: 'markdown/ix-guide.md',
+            category: '配置指南'
         }
     ];
     
