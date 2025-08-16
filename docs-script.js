@@ -47,6 +47,12 @@ function initDocsPage() {
             title: 'IX使用说明',
             path: 'markdown/ix-guide.md',
             category: '配置指南'
+        },
+        {
+            name: 'bw_merge.md',
+            title: '单线程带宽聚合',
+            path: 'markdown/bw_merge.md',
+            category: '配置指南'
         }
     ];
     
