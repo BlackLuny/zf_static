@@ -38,7 +38,42 @@
 
 ### 一键安装
 <div class="code-container">
-<button class="copy-button" onclick="copyCommand(this, 'bash <(curl -s https://get.zeroforwarder.com/install.sh)')">复制</button>
+<button class="copy-button" onclick="(function(btn) {
+  var text = 'bash <(curl -s https://get.zeroforwarder.com/install.sh)';
+  var textArea = document.createElement('textarea');
+  textArea.value = text;
+  textArea.style.position = 'fixed';
+  textArea.style.left = '-999999px';
+  textArea.style.top = '-999999px';
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  var success = false;
+  try {
+    success = document.execCommand('copy');
+  } catch (err) {
+    console.error('Copy failed:', err);
+  }
+  document.body.removeChild(textArea);
+  if (success || (navigator.clipboard && navigator.clipboard.writeText)) {
+    if (!success && navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+    }
+    btn.textContent = '已复制';
+    btn.style.background = '#1a7f37';
+    setTimeout(function() {
+      btn.textContent = '复制';
+      btn.style.background = '#0969da';
+    }, 2000);
+  } else {
+    btn.textContent = '复制失败';
+    btn.style.background = '#dc3545';
+    setTimeout(function() {
+      btn.textContent = '复制';
+      btn.style.background = '#0969da';
+    }, 2000);
+  }
+})(this)">复制</button>
 <pre><code class="language-bash">bash <(curl -s https://get.zeroforwarder.com/install.sh)</code></pre>
 </div>
 
@@ -94,91 +129,42 @@ mkdir -p /root/zfc
 ### 一键更新
 (重要)**进入之前安装的目录**，比如 /root/zfc，然后执行一键脚本
 <div class="code-container">
-<button class="copy-button" onclick="copyCommand(this, 'bash <(curl -s https://get.zeroforwarder.com/install.sh)')">复制</button>
+<button class="copy-button" onclick="(function(btn) {
+  var text = 'bash <(curl -s https://get.zeroforwarder.com/install.sh)';
+  var textArea = document.createElement('textarea');
+  textArea.value = text;
+  textArea.style.position = 'fixed';
+  textArea.style.left = '-999999px';
+  textArea.style.top = '-999999px';
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  var success = false;
+  try {
+    success = document.execCommand('copy');
+  } catch (err) {
+    console.error('Copy failed:', err);
+  }
+  document.body.removeChild(textArea);
+  if (success || (navigator.clipboard && navigator.clipboard.writeText)) {
+    if (!success && navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+    }
+    btn.textContent = '已复制';
+    btn.style.background = '#1a7f37';
+    setTimeout(function() {
+      btn.textContent = '复制';
+      btn.style.background = '#0969da';
+    }, 2000);
+  } else {
+    btn.textContent = '复制失败';
+    btn.style.background = '#dc3545';
+    setTimeout(function() {
+      btn.textContent = '复制';
+      btn.style.background = '#0969da';
+    }, 2000);
+  }
+})(this)">复制</button>
 <pre><code class="language-bash">bash <(curl -s https://get.zeroforwarder.com/install.sh)</code></pre>
 </div>
 选择2，进行升级即可。
-
-<script>
-// 确保函数在全局作用域中定义
-window.copyCommand = function(button, text) {
-  console.log('Copy function called with text:', text);
-  
-  // 创建临时文本区域
-  const textArea = document.createElement("textarea");
-  textArea.value = text;
-  
-  // 设置样式使其不可见但仍能选中
-  textArea.style.position = "fixed";
-  textArea.style.top = "0";
-  textArea.style.left = "0";
-  textArea.style.width = "2em";
-  textArea.style.height = "2em";
-  textArea.style.padding = "0";
-  textArea.style.border = "none";
-  textArea.style.outline = "none";
-  textArea.style.boxShadow = "none";
-  textArea.style.background = "transparent";
-  textArea.style.opacity = "0";
-  
-  document.body.appendChild(textArea);
-  
-  // 选中文本
-  textArea.focus();
-  textArea.select();
-  textArea.setSelectionRange(0, 99999); // 对移动设备
-  
-  let successful = false;
-  
-  try {
-    // 尝试执行复制命令
-    successful = document.execCommand('copy');
-    console.log('execCommand copy result:', successful);
-  } catch (err) {
-    console.error('execCommand copy failed:', err);
-  }
-  
-  // 清理临时元素
-  document.body.removeChild(textArea);
-  
-  if (successful) {
-    showCopySuccess(button);
-  } else {
-    // 尝试现代 Clipboard API
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function() {
-        console.log('Modern clipboard API success');
-        showCopySuccess(button);
-      }).catch(function(err) {
-        console.error('Modern clipboard API failed:', err);
-        showCopyError(button);
-      });
-    } else {
-      console.log('No clipboard API available');
-      showCopyError(button);
-    }
-  }
-};
-
-function showCopySuccess(button) {
-  const originalText = button.textContent;
-  button.textContent = '已复制';
-  button.classList.add('copied');
-  
-  setTimeout(function() {
-    button.textContent = originalText;
-    button.classList.remove('copied');
-  }, 2000);
-}
-
-function showCopyError(button) {
-  const originalText = button.textContent;
-  button.textContent = '复制失败';
-  button.style.background = '#dc3545';
-  
-  setTimeout(function() {
-    button.textContent = originalText;
-    button.style.background = '';
-  }, 2000);
-}
-</script>
