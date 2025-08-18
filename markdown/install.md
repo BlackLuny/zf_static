@@ -55,7 +55,7 @@ mkdir -p /root/zfc
 
 
 ### 一键更新
-(重要)*进入之前安装的目录**，比如 /root/zfc，然后执行一键脚本
+(重要)**进入之前安装的目录**，比如 /root/zfc，然后执行一键脚本
 ```bash
 bash <(curl -s https://get.zeroforwarder.com/install.sh)
 ```
