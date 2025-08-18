@@ -1,9 +1,46 @@
+<style>
+.code-container {
+  position: relative;
+  margin: 16px 0;
+}
+
+.copy-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #0969da;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.copy-button:hover {
+  opacity: 1;
+  background: #0550ae;
+}
+
+.copy-button.copied {
+  background: #1a7f37;
+}
+
+.code-container pre {
+  margin: 0;
+}
+</style>
+
 ## ZFC 一键安装使用说明
 
 ### 一键安装
-```bash
-bash <(curl -s https://get.zeroforwarder.com/install.sh)
-```
+<div class="code-container">
+<button class="copy-button" onclick="copyToClipboard(this, 'bash <(curl -s https://get.zeroforwarder.com/install.sh)')">复制</button>
+<pre><code class="language-bash">bash <(curl -s https://get.zeroforwarder.com/install.sh)</code></pre>
+</div>
 
 开始前请准备：
 - VPS一台，建议至少2G内存，磁盘空间至少40G
@@ -12,7 +49,7 @@ bash <(curl -s https://get.zeroforwarder.com/install.sh)
   - 控制器：如 `zf-controler.example.com`
 - License：`ZFC_INSTANCE_ID`、`ZFC_API_KEY`
 - 如启用 Caddy（推荐自动签发 HTTPS），请确保 80/443 未被占用；使用 Cloudflare 时不要开启“小黄云”。
-准备一个目录，专门用来安装，比如/root/zfc
+- 准备一个目录，专门用来安装，比如/root/zfc
 ```bash
 mkdir -p /root/zfc
 ```
@@ -56,7 +93,72 @@ mkdir -p /root/zfc
 
 ### 一键更新
 (重要)**进入之前安装的目录**，比如 /root/zfc，然后执行一键脚本
-```bash
-bash <(curl -s https://get.zeroforwarder.com/install.sh)
-```
+<div class="code-container">
+<button class="copy-button" onclick="copyToClipboard(this, 'bash <(curl -s https://get.zeroforwarder.com/install.sh)')">复制</button>
+<pre><code class="language-bash">bash <(curl -s https://get.zeroforwarder.com/install.sh)</code></pre>
+</div>
 选择2，进行升级即可。
+
+<script>
+function copyToClipboard(button, text) {
+  // 使用现代的 Clipboard API
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(function() {
+      showCopySuccess(button);
+    }).catch(function(err) {
+      // 如果现代 API 失败，使用备用方法
+      fallbackCopyTextToClipboard(text, button);
+    });
+  } else {
+    // 备用方法，适用于不支持 Clipboard API 的浏览器
+    fallbackCopyTextToClipboard(text, button);
+  }
+}
+
+function fallbackCopyTextToClipboard(text, button) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  
+  // 避免在 iPhone 上滚动到底部
+  textArea.style.top = "0";
+  textArea.style.left = "0";
+  textArea.style.position = "fixed";
+  
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  
+  try {
+    const successful = document.execCommand('copy');
+    if (successful) {
+      showCopySuccess(button);
+    } else {
+      showCopyError(button);
+    }
+  } catch (err) {
+    showCopyError(button);
+  }
+  
+  document.body.removeChild(textArea);
+}
+
+function showCopySuccess(button) {
+  const originalText = button.textContent;
+  button.textContent = '已复制';
+  button.classList.add('copied');
+  
+  setTimeout(function() {
+    button.textContent = originalText;
+    button.classList.remove('copied');
+  }, 2000);
+}
+
+function showCopyError(button) {
+  const originalText = button.textContent;
+  button.textContent = '复制失败';
+  
+  setTimeout(function() {
+    button.textContent = originalText;
+  }, 2000);
+}
+</script>
