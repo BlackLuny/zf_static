@@ -114,16 +114,8 @@
         <!-- 主内容区域 -->
         <main class="docs-main">
             <div class="docs-content">
-                <h1>安装指南</h1>
-                <p>Zero Forwarder 提供多种安装方式，请根据你的系统环境选择最适合的安装方法。</p>
-                
-                <h2>系统要求</h2>
-                <ul>
-                    <li><strong>操作系统：</strong>Linux、macOS、Windows</li>
-                    <li><strong>架构：</strong>x86_64、ARM64</li>
-                    <li><strong>内存：</strong>最低 128MB，推荐 512MB+</li>
-                    <li><strong>网络：</strong>需要互联网连接进行初始化</li>
-                </ul>
+                <h1>快速开始</h1>
+                <p>使用一键安装脚本快速部署 Zero Forwarder。</p>
                 
                 <h2>一键安装脚本</h2>
                 <p>推荐使用一键安装脚本，适用于大多数 Linux 和 macOS 系统：</p>
@@ -132,112 +124,6 @@
                 
                 <div class="docs-alert info">
                     <strong>提示：</strong>安装脚本会自动检测你的系统架构并下载对应版本。
-                </div>
-                
-                <h2>手动安装</h2>
-                
-                <h3>Linux</h3>
-                <p>从 GitHub Releases 下载预编译的二进制文件：</p>
-                
-                <pre data-lang="bash"><code># 下载最新版本
-wget https://github.com/zeroforwarder/zeroforwarder/releases/latest/download/zeroforwarder-linux-amd64.tar.gz
-
-# 解压
-tar -xzf zeroforwarder-linux-amd64.tar.gz
-
-# 移动到系统路径
-sudo mv zeroforwarder /usr/local/bin/
-
-# 验证安装
-zeroforwarder --version</code></pre>
-                
-                <h3>macOS</h3>
-                <p>使用 Homebrew 安装（推荐）：</p>
-                
-                <pre data-lang="bash"><code># 添加 tap
-brew tap zeroforwarder/tap
-
-# 安装
-brew install zeroforwarder
-
-# 验证安装
-zeroforwarder --version</code></pre>
-                
-                <p>或手动下载安装：</p>
-                
-                <pre data-lang="bash"><code># 下载 macOS 版本
-wget https://github.com/zeroforwarder/zeroforwarder/releases/latest/download/zeroforwarder-darwin-amd64.tar.gz
-
-# 解压并安装
-tar -xzf zeroforwarder-darwin-amd64.tar.gz
-sudo mv zeroforwarder /usr/local/bin/</code></pre>
-                
-                <h3>Windows</h3>
-                <p>从 GitHub Releases 页面下载 Windows 版本：</p>
-                
-                <ol>
-                    <li>访问 <a href="https://github.com/zeroforwarder/zeroforwarder/releases">Releases 页面</a></li>
-                    <li>下载 <code>zeroforwarder-windows-amd64.exe</code></li>
-                    <li>将文件重命名为 <code>zeroforwarder.exe</code></li>
-                    <li>将文件移动到 PATH 环境变量包含的目录中</li>
-                </ol>
-                
-                <h2>Docker 安装</h2>
-                <p>使用 Docker 运行 Zero Forwarder：</p>
-                
-                <pre data-lang="bash"><code># 拉取镜像
-docker pull zeroforwarder/zeroforwarder:latest
-
-# 运行容器
-docker run -d --name zeroforwarder \
-  -p 8080:8080 \
-  -v /path/to/config:/etc/zeroforwarder \
-  zeroforwarder/zeroforwarder:latest</code></pre>
-                
-                <h2>从源码编译</h2>
-                <p>如果你需要自定义编译或使用最新的开发版本：</p>
-                
-                <div class="docs-alert warning">
-                    <strong>注意：</strong>从源码编译需要 Rust 1.70+ 和相关构建工具。
-                </div>
-                
-                <pre data-lang="bash"><code># 克隆仓库
-git clone https://github.com/zeroforwarder/zeroforwarder.git
-cd zeroforwarder
-
-# 编译
-cargo build --release
-
-# 安装
-cargo install --path .</code></pre>
-                
-                <h2>验证安装</h2>
-                <p>安装完成后，运行以下命令验证：</p>
-                
-                <pre data-lang="bash"><code>zeroforwarder --version</code></pre>
-                
-                <p>应该看到类似以下的输出：</p>
-                
-                <pre data-lang="text"><code>Zero Forwarder v1.0.0
-Built with Rust 1.70.0</code></pre>
-                
-                <h2>下一步</h2>
-                <p>安装完成后，继续阅读：</p>
-                <ul>
-                    <li><a href="basic-config.html">基础配置</a> - 了解基本配置选项</li>
-                    <li><a href="first-forward.html">第一个转发</a> - 创建你的第一个转发规则</li>
-                </ul>
-                
-                <!-- 分页导航 -->
-                <div class="docs-pagination">
-                    <a href="../" class="pagination-btn">
-                        <div class="btn-label">上一页</div>
-                        <div class="btn-title">文档首页</div>
-                    </a>
-                    <a href="basic-config.html" class="pagination-btn">
-                        <div class="btn-label">下一页</div>
-                        <div class="btn-title">基础配置</div>
-                    </a>
                 </div>
             </div>
         </main>

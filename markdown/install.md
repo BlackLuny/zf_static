@@ -38,7 +38,7 @@
 
 ### 一键安装
 <div class="code-container">
-<button class="copy-button" onclick="copyToClipboard(this, 'bash <(curl -s https://get.zeroforwarder.com/install.sh)')">复制</button>
+<button class="copy-button" onclick="copyCommand(this, 'bash <(curl -s https://get.zeroforwarder.com/install.sh)')">复制</button>
 <pre><code class="language-bash">bash <(curl -s https://get.zeroforwarder.com/install.sh)</code></pre>
 </div>
 
@@ -94,18 +94,17 @@ mkdir -p /root/zfc
 ### 一键更新
 (重要)**进入之前安装的目录**，比如 /root/zfc，然后执行一键脚本
 <div class="code-container">
-<button class="copy-button" onclick="copyToClipboard(this, 'bash <(curl -s https://get.zeroforwarder.com/install.sh)')">复制</button>
+<button class="copy-button" onclick="copyCommand(this, 'bash <(curl -s https://get.zeroforwarder.com/install.sh)')">复制</button>
 <pre><code class="language-bash">bash <(curl -s https://get.zeroforwarder.com/install.sh)</code></pre>
 </div>
 选择2，进行升级即可。
 
 <script>
-function copyToClipboard(button, text) {
-  // 强制使用备用方法，因为 Clipboard API 在某些环境下可能不可用
-  fallbackCopyTextToClipboard(text, button);
-}
-
-function fallbackCopyTextToClipboard(text, button) {
+// 确保函数在全局作用域中定义
+window.copyCommand = function(button, text) {
+  console.log('Copy function called with text:', text);
+  
+  // 创建临时文本区域
   const textArea = document.createElement("textarea");
   textArea.value = text;
   
@@ -120,37 +119,46 @@ function fallbackCopyTextToClipboard(text, button) {
   textArea.style.outline = "none";
   textArea.style.boxShadow = "none";
   textArea.style.background = "transparent";
+  textArea.style.opacity = "0";
   
   document.body.appendChild(textArea);
+  
+  // 选中文本
   textArea.focus();
   textArea.select();
+  textArea.setSelectionRange(0, 99999); // 对移动设备
   
   let successful = false;
+  
   try {
+    // 尝试执行复制命令
     successful = document.execCommand('copy');
-    console.log('Copy command result:', successful);
+    console.log('execCommand copy result:', successful);
   } catch (err) {
-    console.error('Copy failed:', err);
+    console.error('execCommand copy failed:', err);
   }
   
+  // 清理临时元素
   document.body.removeChild(textArea);
   
   if (successful) {
     showCopySuccess(button);
   } else {
-    // 尝试现代 API 作为备选
+    // 尝试现代 Clipboard API
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(function() {
+        console.log('Modern clipboard API success');
         showCopySuccess(button);
       }).catch(function(err) {
         console.error('Modern clipboard API failed:', err);
         showCopyError(button);
       });
     } else {
+      console.log('No clipboard API available');
       showCopyError(button);
     }
   }
-}
+};
 
 function showCopySuccess(button) {
   const originalText = button.textContent;
