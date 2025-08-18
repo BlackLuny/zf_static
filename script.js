@@ -82,6 +82,46 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // 文档卡片点击导航
+    const docCards = document.querySelectorAll('.doc-card');
+    
+    docCards.forEach((card, index) => {
+        card.addEventListener('click', function() {
+            const cardTitle = this.querySelector('.doc-title').textContent;
+            
+            // 根据卡片标题导航到对应页面
+            switch (cardTitle) {
+                case '快速上手':
+                    window.location.href = 'docs/quickstart/';
+                    break;
+                case '核心概念':
+                    window.location.href = 'docs/concepts/';
+                    break;
+                case '高级指南':
+                    window.location.href = 'docs/advanced/';
+                    break;
+                case '配置参考':
+                    window.location.href = 'docs/reference/';
+                    break;
+                default:
+                    // 默认跳转到文档首页
+                    window.location.href = 'docs.html';
+            }
+        });
+        
+        // 添加点击时的视觉反馈
+        card.addEventListener('mousedown', function() {
+            this.style.transform = 'translateY(-4px) scale(0.98)';
+        });
+        
+        card.addEventListener('mouseup', function() {
+            this.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+        
+        // 添加指针样式表示可点击
+        card.style.cursor = 'pointer';
+    });
+    
     // 页面加载动画
     const observerOptions = {
         threshold: 0.1,

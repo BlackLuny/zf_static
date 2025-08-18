@@ -101,45 +101,55 @@ mkdir -p /root/zfc
 
 <script>
 function copyToClipboard(button, text) {
-  // 使用现代的 Clipboard API
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(text).then(function() {
-      showCopySuccess(button);
-    }).catch(function(err) {
-      // 如果现代 API 失败，使用备用方法
-      fallbackCopyTextToClipboard(text, button);
-    });
-  } else {
-    // 备用方法，适用于不支持 Clipboard API 的浏览器
-    fallbackCopyTextToClipboard(text, button);
-  }
+  // 强制使用备用方法，因为 Clipboard API 在某些环境下可能不可用
+  fallbackCopyTextToClipboard(text, button);
 }
 
 function fallbackCopyTextToClipboard(text, button) {
   const textArea = document.createElement("textarea");
   textArea.value = text;
   
-  // 避免在 iPhone 上滚动到底部
+  // 设置样式使其不可见但仍能选中
+  textArea.style.position = "fixed";
   textArea.style.top = "0";
   textArea.style.left = "0";
-  textArea.style.position = "fixed";
+  textArea.style.width = "2em";
+  textArea.style.height = "2em";
+  textArea.style.padding = "0";
+  textArea.style.border = "none";
+  textArea.style.outline = "none";
+  textArea.style.boxShadow = "none";
+  textArea.style.background = "transparent";
   
   document.body.appendChild(textArea);
   textArea.focus();
   textArea.select();
   
+  let successful = false;
   try {
-    const successful = document.execCommand('copy');
-    if (successful) {
-      showCopySuccess(button);
-    } else {
-      showCopyError(button);
-    }
+    successful = document.execCommand('copy');
+    console.log('Copy command result:', successful);
   } catch (err) {
-    showCopyError(button);
+    console.error('Copy failed:', err);
   }
   
   document.body.removeChild(textArea);
+  
+  if (successful) {
+    showCopySuccess(button);
+  } else {
+    // 尝试现代 API 作为备选
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function() {
+        showCopySuccess(button);
+      }).catch(function(err) {
+        console.error('Modern clipboard API failed:', err);
+        showCopyError(button);
+      });
+    } else {
+      showCopyError(button);
+    }
+  }
 }
 
 function showCopySuccess(button) {
@@ -156,9 +166,11 @@ function showCopySuccess(button) {
 function showCopyError(button) {
   const originalText = button.textContent;
   button.textContent = '复制失败';
+  button.style.background = '#dc3545';
   
   setTimeout(function() {
     button.textContent = originalText;
+    button.style.background = '';
   }, 2000);
 }
 </script>
