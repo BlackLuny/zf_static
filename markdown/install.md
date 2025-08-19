@@ -78,7 +78,7 @@
 </div>
 
 开始前请准备：
-- VPS一台，建议至少2G内存，磁盘空间至少40G
+- VPS一台，Debian系统, 建议至少2G内存，磁盘空间至少40G
 - 已解析到服务器公网 IP 的两个域名：
   - 前端：如 `forward.example.com`
   - 控制器：如 `zf-controler.example.com`
