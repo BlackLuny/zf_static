@@ -53,6 +53,12 @@ function initDocsPage() {
             title: '单线程带宽聚合',
             path: 'markdown/bw_merge.md',
             category: '配置指南'
+        },
+        {
+            name: 'bandwidth_speed_limit.md',
+            title: '带宽限速',
+            path: 'markdown/bandwidth_speed_limit.md',
+            category: '配置指南'
         }
     ];
     
