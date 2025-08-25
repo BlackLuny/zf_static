@@ -59,6 +59,12 @@ function initDocsPage() {
             title: '带宽限速',
             path: 'markdown/bandwidth_speed_limit.md',
             category: '配置指南'
+        },
+        {
+            name: 'fwd_chain.md',
+            title: '动态多级转发链',
+            path: 'markdown/fwd_chain.md',
+            category: '配置指南'
         }
     ];
     
