@@ -78,16 +78,18 @@
   }],
   "select_weight": 100, // 主转发端点的选择权重, 随机模式生效
   "bind_ip_list": ["192.168.4.1"], // 自定义监听IP列表，默认双栈[::0]
-  "backend_server_custom_configs": { // 特定转发端点的个性化配置
-    "server_id": 12345, // 转发端点ID（必须是具体端点ID，非组ID）
-    "native_udp": false,
-    "max_latency_thold_ms": 800,
-    "active_time_ranges": [{
-      "start": "20:00:00", 
-      "end": "23:59:59"
-    }],
-    "select_weight": 100
-  }
+  "backend_server_custom_configs": [
+      { // 特定转发端点的个性化配置
+      "server_id": 12345, // 转发端点ID（必须是具体端点ID，非组ID）
+      "native_udp": false,
+      "max_latency_thold_ms": 800,
+      "active_time_ranges": [{
+        "start": "20:00:00", 
+        "end": "23:59:59"
+      }],
+      "select_weight": 100
+    }
+  ]
 }
 ```
 
