@@ -72,7 +72,7 @@
   "reuse_tcp": true, // TCP连接复用，可降低连接延迟，默认启用
   "native_udp": true, // 原生UDP模式，默认启用，关闭时使用UOT协议
   "max_latency_thold_ms": 1000, // 延迟阈值，超过此值时强制切换服务器
-  "active_time_ranges": [{ // 激活时间段，基于服务器本地时间
+  "active_time_ranges": [{ // 激活时间段，基于转发端点的本地时间
     "start": "20:00:00",
     "end": "23:59:59"
   }],
