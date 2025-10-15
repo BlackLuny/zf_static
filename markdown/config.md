@@ -84,7 +84,8 @@
     "active_time_ranges": [{
       "start": "20:00:00", 
       "end": "23:59:59"
-    }]
+    }],
+    "select_weight": 100
   }
 }
 ```
