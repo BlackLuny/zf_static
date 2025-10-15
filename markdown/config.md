@@ -1,314 +1,135 @@
 # 配置说明
 
-Zero Forwarder 使用 YAML 格式的配置文件，提供灵活而强大的配置选项。
+本文档介绍主要页面的配置逻辑和参数说明
 
-## 配置文件位置
+## 服务器配置
+服务器可以理解为入口，每一个端口转发都需要有一个入口作为流量入口。
 
-默认配置文件路径：
-- Linux/macOS: `/etc/zeroforwarder/config.yaml`
-- Windows: `%APPDATA%\ZeroForwarder\config.yaml`
+### 基本信息
 
-## 基础配置
+![image-20251015160750970](https://img.coderluny.com:444/uploads/33671b22-392a-47d3-8a78-53155066461f.png)
 
-### 基本设置
+**IP地址**: 服务器的入口地址，主要作用是显示入口IP地址，可以随意填写，比如填写IP地址或者域名都可以，**不要填写端口**
 
-```yaml
-# 服务基本信息
-server:
-  name: "zf-server-01"
-  listen_addr: "0.0.0.0:8080"
-  admin_addr: "127.0.0.1:8081"
+**网卡名称**：一般情况下大多数ubuntu或者debian都是eth0，具体可以在需要安装服务器的机器执行ip a命令，获取，例如:
+
+![image-20251015161113789](https://img.coderluny.com:444/uploads/adeeeb17-1c7e-4960-937a-0055cc20647e.png)
+
+**端口范围**：期望交给面板进行管理的端口范围，作用是指定自动分配端口的范围，面板会自动过滤掉被其他服务占用的端口，一般情况无需特别设置。
+
+
+
+### 转发端点设置
+
+![image-20251015162256696](https://img.coderluny.com:444/uploads/e8932605-0f27-4cbc-9eeb-55756941bef1.png)
+
+可以给服务器选择转发端点，有两个作用:
+
+* 如果**不勾选**'使用转发端点作为传输'，则添加的服务器会使用选择的转发端点/转发链进行代理访问**面板控制器服务器**，解决服务器和面板控制器网络连接不畅的问题，称为控制器代理。
+* 如果**勾选**'使用转发端点作为传输'，则除了控制器代理功能外，会打包此服务器和转发端点，组成一个隧道，之后添加的端口会默认使用此处配置的隧道转发端点进行数据转发。
+
+**配置模式**: 目前支持两种模式：
+
+* 传统模式: 这种模式服务器下，可以设置**多个**转发端点(组)，并且可以设置使用何种负载均衡模式(默认延迟优先)，任意多个转发端点故障了会自动切换，确保整个隧道多可用性；
+* 转发链模式: 这种模式下，需要选择转发链进行数据转发，转发链这种隧道会依次让流量经过经过链中的每一个(组)节点，完成数据转发，并且拉通整个链，选择延迟最优的转发路径进行数据转发。
+
+**Tot服务器**: 用于单线程带宽聚合，**目前只支持传统模式配置**，效果是，流量会被均匀拆分，从你选择的多个转发端点进行并行传输，最终汇聚到所选的Tot服务器进行合并再转发到目的地，支持选择多个进行负载均衡。
+
+### 高级选项
+
+![image-20251015162601165](https://img.coderluny.com:444/uploads/3d7173c3-19a0-4413-a463-21f0d15f82af.png)
+
+**流量倍率**: 服务器的流量消耗计算倍率，统计的流量从使用角度来说都是**单向流量**(上行+下行)，比如用户下载了2G电影，上传了1G视频，那么在倍率为1.0情况下，消耗的流量就是2+1=3G，可以通过设置倍率，改变流量消耗计算规则。
+**允许自带转发端点**: 开启之后，此服务器可以在添加端口的时候，另外设置使用的转发端点或者转发链，注意: 一般建议专线转发场景关闭，开启可能因为某些用户滥用造成服务器资源开销过大。
+**强制使用转发端点**: 开启之后，用户添加端口的时候必须要选择转发端点/转发链。
+**允许转发链模式**: 开启之后，用户可以在添加端口时，选择使用转发链，注意: 转发链对资源开销比较大，建议谨慎开放给用户使用。
+**允许延迟测试**: 是否允许用户在端口管理界面对端口的连通性进行诊断，默认开启；
+**UDP原进原出**: 用来解决部分场景下无法UDP不通的问题，建议如果没问题，不需要开启;
+**允许入站代理**: 控制是否允许使用入站代理配置，默认关闭；
+**带宽**：控制服务器的限速规则，此规则适用于整个服务器的带宽控制，包括所有用户的使用总带宽设置。
+**最大IP数**: 限制此服务器下，单个端口同一时间允许的最多IP数量；
+**每IP最大连接数**：限制此服务器下，单个端口同一时间允许的单个IP最大TCP+UDP连接数量。
+**协议过滤器**: 控制此服务器屏蔽的协议类型
+**标签**: 主要用来过滤服务器
+**自定义配置**: Json格式，**隧道**配置额外的自定义选项，分为主对端和备用对端，一般情况下是第一个转发端点作为主，只有使用了转发端点打隧道才生效，当前支持：
+
+```json
+{
+"udp_buffer_size": usize, // udp socket buffer size, 默认4MB，所有转发端点生效
+  "reuse_tcp": bool, // 是否允许连接复用，连接复用会降低tcp连接延迟，默认开启，可选关闭
+  "native_udp": bool, // 是否使用原生UDP，默认开启，如果关闭，则使用UOT
+  "max_latency_thold_ms": usize, // 当测量的延迟超过设置的值时，会无条件切换服务器。
+  "active_time_ranges": [{
+                        "start": "20:00:00",
+                        "end": "23:59:59"
+                    }], // 根据服务器的local时间（后续会修改为UTC时间），决定服务器是否启用,可以设置多个时间段，时间段内才会启用隧道
+  "select_weight": usize // 主转发端点的选择概率(第一个所选服务器)
+  "backend_server_custom_configs": {
+      "server_id": usize // 特定转发端点的设置，如果是转发端点组，需要是具体转发端点的ID，不能是组的ID
+      "native_udp": bool,
+  "max_latency_thold_ms": usize,
+  "active_time_ranges": [{
+                        "start": "20:00:00",
+                        "end": "23:59:59"
+                    }],
+  }
   
-# 日志配置
-logging:
-  level: "info"  # debug, info, warn, error
-  file: "/var/log/zeroforwarder/app.log"
-  max_size: 100  # MB
-  max_backups: 5
-  max_age: 30    # 天
+}
 ```
 
-### 网络配置
+## 端口配置
+### 基本信息
 
-```yaml
-network:
-  # 连接池配置
-  connection_pool:
-    max_connections: 1000
-    idle_timeout: "300s"
-    keepalive: "60s"
-  
-  # 传输配置
-  transport:
-    protocol: "tcp"  # tcp, udp, quic
-    encryption: true
-    compression: true
-    buffer_size: 64536  # bytes
+![image-20251015165758223](https://img.coderluny.com:444/uploads/e53a86b9-0d5e-46c4-8290-45bc79f38dbc.png)
+
+**名称**: 随便起一个容易标识的名字
+
+**线路**：选择服务器（组）
+
+**目标**：落地IP地址列表，每一行一个，支持IPV4/6，域名，必须包含端口，如果是IPv6，需要用中括号包括IPV6地址。
+
+**服务端口**: 可以手动指定入口端口，管理员可以超过配置的端口范围;
+
+### 转发配置
+
+![image-20251015170050188](https://img.coderluny.com:444/uploads/5439b72d-a70f-482c-aa97-6aa5b9ee82f8.png)
+
+**转发链模式**： 如果启用，则所有流量将根据选择的转发端点，按照顺序从第一个开始，转发到第二个，接着第三个...最后一个，之后进入落地服务器。如果不启用，则所选择的所有转发端点都作为候选，选择其中一个进行数据转发。
+
+**转发端点**：选择被用于流量转发的转发端点，支持选择多个，会自动进行故障转移和负载均衡。
+
+**Tot服务器**：如果选择，则开启单线程聚合功能，流量会并行经过所选的**转发端点**，之后进入所选的**Tot服务器**，可以选择多个Tot服务器进行负载均衡和故障转移。
+
+### 高级选项
+
+![image-20251015170506754](https://img.coderluny.com:444/uploads/6c261af5-9020-424c-b54b-7b3905d29051.png)
+
+**目标选择模式**: 如果落地是多个，可以选择落地的负载均衡策略；
+
+**测试方法**：支持tcpping和icmp(ping)两种方式测量，用来确定服务器是否存活，以及延迟。
+
+**接受代理协议**：可以选择开启和关闭接受代理协议，支持V1和V2；
+
+**发送代理协议**: 主动发送代理协议给落地，目前支持V1，V2和V3(V2+UDP);
+
+**入站配置**: 支持设置入站代理，入站代理是部署在所选线路的前置代理协议，当配置时，**落地IP**将只作为延迟测量，不再是流量转发的目的地，落地IP将是选择的转发端点/链，当前仅支持Shadowsocks，填写格式如下，**保存之后会自动生成加密方式和密码**。编辑端口可以查看
+
+```json
+{
+  "Ss":{}
+}
 ```
 
-## 转发规则
 
-### 简单端口转发
 
-```yaml
-forwards:
-  # HTTP 服务转发
-  - name: "web-server"
-    listen: "8080"
-    target: "192.168.1.100:80"
-    protocol: "tcp"
-    
-  # HTTPS 服务转发
-  - name: "secure-web"
-    listen: "8443"
-    target: "192.168.1.100:443"
-    protocol: "tcp"
-    tls: true
-```
+## 转发端点组
 
-### 负载均衡
+可以将多个转发端点组成为一个转发端点组进行统一管理。
 
-```yaml
-forwards:
-  - name: "api-cluster"
-    listen: "9000"
-    load_balance:
-      algorithm: "round_robin"  # round_robin, least_connections, ip_hash
-      targets:
-        - "192.168.1.10:8080"
-        - "192.168.1.11:8080"
-        - "192.168.1.12:8080"
-      health_check:
-        enabled: true
-        interval: "30s"
-        timeout: "5s"
-        path: "/health"
-```
+## 服务器组
 
-### 带宽聚合
+可以将多个服务器组成为一个服务器组进行管理，添加和编辑的端口会自动同步到多个组内服务器，需要确保服务器组内的服务器同样的端口都是可用状态，并且端口范围和所有配置均一致（隧道设置可以不一致）
 
-```yaml
-forwards:
-  - name: "aggregated-tunnel"
-    listen: "10000"
-    aggregation:
-      enabled: true
-      servers:
-        - addr: "server1.example.com:8080"
-          weight: 1
-        - addr: "server2.example.com:8080"
-          weight: 2
-        - addr: "server3.example.com:8080"
-          weight: 1
-      strategy: "bandwidth"  # bandwidth, latency, hybrid
-```
+## 转发链
 
-## 安全配置
-
-### 访问控制
-
-```yaml
-security:
-  # IP 白名单
-  allow_list:
-    - "192.168.1.0/24"
-    - "10.0.0.0/8"
-    - "172.16.0.0/12"
-  
-  # IP 黑名单
-  deny_list:
-    - "192.168.1.100"
-    - "0.0.0.0/0"  # 默认拒绝所有
-  
-  # 速率限制
-  rate_limit:
-    enabled: true
-    requests_per_second: 100
-    burst_size: 200
-    window: "1m"
-```
-
-### TLS/SSL 配置
-
-```yaml
-tls:
-  enabled: true
-  cert_file: "/etc/zeroforwarder/certs/server.crt"
-  key_file: "/etc/zeroforwarder/certs/server.key"
-  ca_file: "/etc/zeroforwarder/certs/ca.crt"
-  
-  # 自动证书申请 (Let's Encrypt)
-  auto_cert:
-    enabled: true
-    domains:
-      - "zf.example.com"
-      - "api.example.com"
-    email: "admin@example.com"
-```
-
-## 用户管理
-
-### 多用户配置
-
-```yaml
-users:
-  # 管理员用户
-  - name: "admin"
-    password: "$2b$12$hash..."  # bcrypt hash
-    role: "admin"
-    permissions:
-      - "read"
-      - "write"
-      - "admin"
-  
-  # 普通用户
-  - name: "user1"
-    password: "$2b$12$hash..."
-    role: "user"
-    quota:
-      bandwidth: "100Mbps"
-      connections: 50
-      data_transfer: "10GB"  # 每月
-    permissions:
-      - "read"
-```
-
-### 认证配置
-
-```yaml
-auth:
-  method: "password"  # password, certificate, oauth2
-  session_timeout: "24h"
-  max_login_attempts: 3
-  lockout_duration: "15m"
-  
-  # OAuth2 配置（可选）
-  oauth2:
-    provider: "google"
-    client_id: "your-client-id"
-    client_secret: "your-client-secret"
-    redirect_url: "https://zf.example.com/auth/callback"
-```
-
-## 监控配置
-
-### 指标收集
-
-```yaml
-monitoring:
-  # Prometheus 指标
-  prometheus:
-    enabled: true
-    listen_addr: "0.0.0.0:9090"
-    path: "/metrics"
-  
-  # 健康检查
-  health_check:
-    enabled: true
-    listen_addr: "0.0.0.0:8082"
-    path: "/health"
-  
-  # 性能指标
-  metrics:
-    collect_interval: "10s"
-    retention_period: "7d"
-```
-
-### 告警配置
-
-```yaml
-alerts:
-  # 邮件告警
-  email:
-    enabled: true
-    smtp_server: "smtp.example.com:587"
-    username: "alerts@example.com"
-    password: "your-password"
-    to: ["admin@example.com"]
-  
-  # 告警规则
-  rules:
-    - name: "high_cpu_usage"
-      condition: "cpu_usage > 80"
-      duration: "5m"
-      severity: "warning"
-    
-    - name: "connection_limit"
-      condition: "active_connections > 900"
-      duration: "2m"
-      severity: "critical"
-```
-
-## 完整配置示例
-
-```yaml
-# /etc/zeroforwarder/config.yaml
-server:
-  name: "zf-production"
-  listen_addr: "0.0.0.0:8080"
-  admin_addr: "127.0.0.1:8081"
-
-logging:
-  level: "info"
-  file: "/var/log/zeroforwarder/app.log"
-  max_size: 100
-  max_backups: 5
-
-network:
-  connection_pool:
-    max_connections: 2000
-    idle_timeout: "300s"
-  transport:
-    protocol: "tcp"
-    encryption: true
-    compression: true
-
-forwards:
-  - name: "web-cluster"
-    listen: "80"
-    load_balance:
-      algorithm: "round_robin"
-      targets:
-        - "192.168.1.10:8080"
-        - "192.168.1.11:8080"
-      health_check:
-        enabled: true
-        interval: "30s"
-
-security:
-  allow_list:
-    - "192.168.0.0/16"
-  rate_limit:
-    enabled: true
-    requests_per_second: 1000
-
-tls:
-  enabled: true
-  auto_cert:
-    enabled: true
-    domains: ["api.example.com"]
-    email: "admin@example.com"
-
-monitoring:
-  prometheus:
-    enabled: true
-  health_check:
-    enabled: true
-```
-
-## 配置验证
-
-使用以下命令验证配置文件：
-
-```bash
-# 验证配置语法
-zf config validate
-
-# 检查配置并显示解析结果
-zf config check --verbose
-
-# 重新加载配置（无需重启）
-zf config reload
-```
-
-更多高级配置选项，请参考完整的配置参考文档。
+多个转发端点组和按照顺序组成转发链，在添加服务器时可以选择链。
