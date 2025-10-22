@@ -8,7 +8,7 @@
 
 **目标服务器**：美东
 
-**测试工具**：NPT（Network Performance Test）
+**测试工具**：NPT（Network Performance Test）[github](https://github.com/BlackLuny/NPT)
 
 **测试原理**：通过客户端模拟真实用户的日常网页流量和QUIC流量，统计从发送请求到接收响应的完整时间，以测量真实用户体验延迟。
 
