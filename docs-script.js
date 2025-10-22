@@ -65,6 +65,12 @@ function initDocsPage() {
             title: '动态多级转发链',
             path: 'markdown/fwd_chain.md',
             category: '配置指南'
+        },
+        {
+            name: 'latency_test.md',
+            title: '延迟Benchmark',
+            path: 'markdown/latency_test.md',
+            category: '配置指南'
         }
     ];
     
