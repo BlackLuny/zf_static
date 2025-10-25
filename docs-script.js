@@ -71,6 +71,12 @@ function initDocsPage() {
             title: '延迟Benchmark',
             path: 'markdown/latency_test.md',
             category: '配置指南'
+        },
+        {
+            name: 'inbound_proxy.md',
+            title: '入站代理配置指南',
+            path: 'markdown/inbound_proxy.md',
+            category: '配置指南'
         }
     ];
     
