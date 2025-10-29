@@ -76,9 +76,6 @@ TODO
    sudo journalctl -u zf --since "1 hour ago"
    ```
 
-2. **联系技术支持**：
-   - 官方文档：https://docs.zeroforwarder.com
-
 在寻求帮助时，请提供：
 - 系统信息（`uname -a`）
 - Zero Forwarder 版本（`zf version`）
