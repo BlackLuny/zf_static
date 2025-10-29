@@ -77,6 +77,12 @@ function initDocsPage() {
             title: '入站代理配置指南',
             path: 'markdown/inbound_proxy.md',
             category: '配置指南'
+        },
+        {
+            name: 'china_server.md',
+            title: '国内机器最佳实践',
+            path: 'markdown/china_server.md',
+            category: '配置指南'
         }
     ];
     
