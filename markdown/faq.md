@@ -65,7 +65,17 @@ TODO
 ## 升级和维护
 
 ### Q: 如何备份和恢复配置？
-TODO
+**A:**迁移之前，需要确保新机器的操作系统版本, docker docker-compose版本，以及面板域名不要变化。
+```bash
+bash <(curl -sL https://get.zeroforwarder.com/install.sh)
+```
+选择5，打包数据
+之后停止当前机器的服务
+```bash
+docker-compose down
+```
+把打包的数据拷贝到新机器，进入目录执行脚本，选择6进行恢复。**不需要全新安装**。
+
 
 ## 获取帮助
 
