@@ -83,6 +83,12 @@ function initDocsPage() {
             title: '国内机器最佳实践',
             path: 'markdown/china_server.md',
             category: '配置指南'
+        },
+        {
+            name: 'global_cdn_config.md',
+            title: '一机拉全球模式配置',
+            path: 'markdown/global_cdn_config.md',
+            category: '配置指南'
         }
     ];
     
