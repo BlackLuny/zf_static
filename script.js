@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // 根据卡片标题导航到对应页面
             switch (cardTitle) {
                 case '快速上手':
-                    window.location.href = 'docs/quickstart/';
+                    window.location.href = 'docs/';
                     break;
                 case '核心概念':
                     window.location.href = 'docs/concepts/';
