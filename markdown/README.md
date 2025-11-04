@@ -1,6 +1,6 @@
 # Zero Forwarder
 
-Zero Forwarder 是一个基于 Rust 开发的新一代高性能网络转发引擎。
+Zero Forwarder 是一个基于 Rust 开发的超越时代的超高性能网络转发引擎。
 
 ## 产品特性
 
