@@ -49,6 +49,12 @@ function initDocsPage() {
             category: '配置指南'
         },
         {
+            name: 'halo-ix.md',
+            title: 'Halo IX机器使用说明',
+            path: 'markdown/halo-ix.md',
+            category: '配置指南'
+        },
+        {
             name: 'bw_merge.md',
             title: '单线程带宽聚合',
             path: 'markdown/bw_merge.md',
