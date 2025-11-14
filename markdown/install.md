@@ -84,7 +84,7 @@
   - 控制器：如 `zf-controler.example.com`
 - License：`ZFC_INSTANCE_ID`、`ZFC_API_KEY`
 - 如启用 Caddy（推荐自动签发 HTTPS），请确保 80/443 未被占用，并且如果使用 Cloudflare 时，不要开启“小黄云”。
-- 安装Docker 和 docker-compose
+- 安装Docker 和 docker-compose, 其中docker-compose确保版本为2.1x，1.x可能会出现奇怪问题。
   一般可以debian可以使用以下命令安装
 ```bash
 apt-get install docker.io
