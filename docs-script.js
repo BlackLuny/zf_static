@@ -95,7 +95,14 @@ function initDocsPage() {
             title: '一机拉全球模式配置',
             path: 'markdown/global_cdn_config.md',
             category: '配置指南'
+        },
+        {
+            name: 'jp_us_lan.md',
+            title: '日本美国内网组网配置',
+            path: 'markdown/jp_us_lan.md',
+            category: '配置指南'
         }
+
     ];
     
     // 初始化侧边栏导航
