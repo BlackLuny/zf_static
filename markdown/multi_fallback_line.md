@@ -111,6 +111,31 @@
     ]
 }
 ```
+备用为传统模式转发端点, 延迟优选模式
+```json
+{
+    "fallback_fwder_configs": [
+        // 第一个备用
+        {
+            "fwder_ids": [
+                14, 15       // 转发端点ID， 默认使用round robin 轮训
+            ],
+            "detail": {
+                "Hammer": {
+                    "fwder_select_mode": "BestLatency", // 支持: BestLatency, FallBack, RoundRobin, Random
+                }
+            }
+
+        },
+        // 第二个备用
+         {
+            "fwder_ids": [
+                10, 12       // 转发端点ID， 默认使用round robin 轮训
+            ]
+        }
+    ]
+}
+```
 备用为转发链模式配置:
 ```json
 {
