@@ -101,8 +101,13 @@ function initDocsPage() {
             title: '日本美国内网组网配置',
             path: 'markdown/jp_us_lan.md',
             category: '配置指南'
+        },
+        {
+            name: 'multi_fallback_line.md',
+            title: '多备用线路配置',
+            path: 'markdown/multi_fallback_line.md',
+            category: '配置指南'
         }
-
     ];
     
     // 初始化侧边栏导航
