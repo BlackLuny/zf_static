@@ -1,12 +1,12 @@
 // 文档页面 JavaScript 功能
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     initDocsPage();
 });
 
 function initDocsPage() {
     // 配置 marked.js
     marked.setOptions({
-        highlight: function(code, lang) {
+        highlight: function (code, lang) {
             if (lang && Prism.languages[lang]) {
                 return Prism.highlight(code, Prism.languages[lang], lang);
             }
@@ -15,7 +15,7 @@ function initDocsPage() {
         breaks: true,
         gfm: true
     });
-    
+
     // 文档配置
     const docsConfig = [
         {
@@ -109,24 +109,24 @@ function initDocsPage() {
             category: '配置指南'
         }
     ];
-    
+
     // 初始化侧边栏导航
     initSidebar(docsConfig);
-    
+
     // 初始化搜索功能
     initSearch(docsConfig);
-    
+
     // 加载默认文档
     const defaultDoc = getDefaultDoc();
     loadDocument(defaultDoc.path, defaultDoc.title);
-    
+
     // 设置当前活动文档
     setActiveNav(defaultDoc.name);
 }
 
 function initSidebar(docsConfig) {
     const navList = document.getElementById('nav-list');
-    
+
     // 按分类组织文档
     const categories = {};
     docsConfig.forEach(doc => {
@@ -135,7 +135,7 @@ function initSidebar(docsConfig) {
         }
         categories[doc.category].push(doc);
     });
-    
+
     // 生成导航HTML
     let navHTML = '';
     Object.keys(categories).forEach(category => {
@@ -144,7 +144,7 @@ function initSidebar(docsConfig) {
                 <div class="category-header">${category}</div>
                 <ul class="category-list">
         `;
-        
+
         categories[category].forEach(doc => {
             navHTML += `
                 <li class="nav-item">
@@ -154,15 +154,15 @@ function initSidebar(docsConfig) {
                 </li>
             `;
         });
-        
+
         navHTML += `
                 </ul>
             </li>
         `;
     });
-    
+
     navList.innerHTML = navHTML;
-    
+
     // 添加分类样式
     const style = document.createElement('style');
     style.textContent = `
@@ -187,25 +187,33 @@ function initSidebar(docsConfig) {
         }
     `;
     document.head.appendChild(style);
-    
+
     // 绑定点击事件
-    navList.addEventListener('click', function(e) {
+    navList.addEventListener('click', function (e) {
         if (e.target.classList.contains('nav-link-item')) {
             e.preventDefault();
             const path = e.target.dataset.path;
             const title = e.target.dataset.title;
             const docName = e.target.dataset.doc;
-            
+
             loadDocument(path, title);
             setActiveNav(docName);
-            
+
             // 更新URL
             window.history.pushState({ path, title, docName }, title, `#${docName}`);
+
+            // 移动端关闭侧边栏
+            if (window.innerWidth <= 768) {
+                const sidebar = document.querySelector('.docs-sidebar');
+                if (sidebar) {
+                    sidebar.classList.remove('open');
+                }
+            }
         }
     });
-    
+
     // 处理浏览器后退/前进
-    window.addEventListener('popstate', function(e) {
+    window.addEventListener('popstate', function (e) {
         if (e.state) {
             loadDocument(e.state.path, e.state.title);
             setActiveNav(e.state.docName);
@@ -220,10 +228,10 @@ function initSidebar(docsConfig) {
 function initSearch(docsConfig) {
     const searchInput = document.getElementById('search-input');
     const navList = document.getElementById('nav-list');
-    
-    searchInput.addEventListener('input', function(e) {
+
+    searchInput.addEventListener('input', function (e) {
         const searchTerm = e.target.value.toLowerCase().trim();
-        
+
         if (searchTerm === '') {
             // 显示所有文档
             navList.querySelectorAll('.nav-item').forEach(item => {
@@ -234,20 +242,20 @@ function initSearch(docsConfig) {
             });
             return;
         }
-        
+
         // 搜索匹配的文档
         navList.querySelectorAll('.nav-item').forEach(item => {
             const link = item.querySelector('.nav-link-item');
             const title = link.dataset.title.toLowerCase();
             const docName = link.dataset.doc.toLowerCase();
-            
+
             if (title.includes(searchTerm) || docName.includes(searchTerm)) {
                 item.style.display = 'block';
             } else {
                 item.style.display = 'none';
             }
         });
-        
+
         // 隐藏空分类
         navList.querySelectorAll('.nav-category').forEach(category => {
             const visibleItems = category.querySelectorAll('.nav-item[style="display: block"], .nav-item:not([style])');
@@ -262,7 +270,7 @@ function initSearch(docsConfig) {
 
 async function loadDocument(path, title) {
     const contentDiv = document.getElementById('markdown-content');
-    
+
     // 显示加载状态
     contentDiv.innerHTML = `
         <div class="loading">
@@ -270,33 +278,33 @@ async function loadDocument(path, title) {
             <p>加载中...</p>
         </div>
     `;
-    
+
     try {
         const response = await fetch(path);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const markdown = await response.text();
         const html = marked.parse(markdown);
-        
+
         // 渲染内容
         contentDiv.innerHTML = html;
         contentDiv.className = 'markdown-body';
-        
+
         // 更新页面标题
         document.title = `${title} - Zero Forwarder 文档`;
-        
+
         // 生成目录
         generateTOC();
-        
+
         // 高亮代码
         Prism.highlightAllUnder(contentDiv);
-        
+
         // 滚动到顶部
         contentDiv.scrollTop = 0;
         window.scrollTo(0, 0);
-        
+
     } catch (error) {
         console.error('加载文档失败:', error);
         contentDiv.innerHTML = `
@@ -314,21 +322,21 @@ function generateTOC() {
     const tocNav = document.getElementById('toc-nav');
     const contentDiv = document.getElementById('markdown-content');
     const headings = contentDiv.querySelectorAll('h1, h2, h3, h4');
-    
+
     if (headings.length === 0) {
         tocNav.innerHTML = '<p class="no-toc">此文档没有标题</p>';
         return;
     }
-    
+
     let tocHTML = '<ul>';
     headings.forEach((heading, index) => {
         const level = heading.tagName.toLowerCase();
         const text = heading.textContent;
         const id = `heading-${index}`;
-        
+
         // 为标题添加ID，用于锚点跳转
         heading.id = id;
-        
+
         tocHTML += `
             <li>
                 <a href="#${id}" class="toc-${level}" data-target="${id}">
@@ -338,20 +346,20 @@ function generateTOC() {
         `;
     });
     tocHTML += '</ul>';
-    
+
     tocNav.innerHTML = tocHTML;
-    
+
     // 绑定目录点击事件
-    tocNav.addEventListener('click', function(e) {
+    tocNav.addEventListener('click', function (e) {
         if (e.target.tagName === 'A') {
             e.preventDefault();
             const targetId = e.target.dataset.target;
             const targetElement = document.getElementById(targetId);
-            
+
             if (targetElement) {
                 const navbarHeight = document.querySelector('.navbar').offsetHeight;
                 const targetPosition = targetElement.offsetTop - navbarHeight - 20;
-                
+
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
@@ -359,7 +367,7 @@ function generateTOC() {
             }
         }
     });
-    
+
     // 滚动时高亮当前目录项
     initTOCHighlight();
 }
@@ -367,25 +375,25 @@ function generateTOC() {
 function initTOCHighlight() {
     const tocLinks = document.querySelectorAll('.toc-nav a');
     const headings = document.querySelectorAll('#markdown-content h1, #markdown-content h2, #markdown-content h3, #markdown-content h4');
-    
+
     if (headings.length === 0) return;
-    
+
     function updateTOCHighlight() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const navbarHeight = document.querySelector('.navbar').offsetHeight;
-        
+
         let currentHeading = null;
-        
+
         headings.forEach(heading => {
             const rect = heading.getBoundingClientRect();
             if (rect.top <= navbarHeight + 50) {
                 currentHeading = heading;
             }
         });
-        
+
         // 更新目录高亮
         tocLinks.forEach(link => link.classList.remove('active'));
-        
+
         if (currentHeading) {
             const activeLink = document.querySelector(`.toc-nav a[data-target="${currentHeading.id}"]`);
             if (activeLink) {
@@ -393,19 +401,19 @@ function initTOCHighlight() {
             }
         }
     }
-    
+
     // 节流滚动事件
     let ticking = false;
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         if (!ticking) {
-            requestAnimationFrame(function() {
+            requestAnimationFrame(function () {
                 updateTOCHighlight();
                 ticking = false;
             });
             ticking = true;
         }
     });
-    
+
     // 初始高亮
     updateTOCHighlight();
 }
@@ -413,7 +421,7 @@ function initTOCHighlight() {
 function setActiveNav(docName) {
     const navLinks = document.querySelectorAll('.nav-link-item');
     navLinks.forEach(link => link.classList.remove('active'));
-    
+
     const activeLink = document.querySelector(`.nav-link-item[data-doc="${docName}"]`);
     if (activeLink) {
         activeLink.classList.add('active');
@@ -433,7 +441,7 @@ function getDefaultDoc() {
             };
         }
     }
-    
+
     // 返回默认文档
     return {
         name: 'README.md',
@@ -446,14 +454,14 @@ function getDefaultDoc() {
 function initMobileMenu() {
     const menuBtn = document.querySelector('.mobile-menu-btn');
     const sidebar = document.querySelector('.docs-sidebar');
-    
+
     if (menuBtn) {
-        menuBtn.addEventListener('click', function() {
+        menuBtn.addEventListener('click', function () {
             sidebar.classList.toggle('open');
         });
-        
+
         // 点击内容区域关闭菜单
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
                 sidebar.classList.remove('open');
             }
@@ -466,7 +474,7 @@ function handleResponsive() {
     function checkMobile() {
         const isMobile = window.innerWidth <= 768;
         const navLinks = document.querySelector('.nav-links');
-        
+
         if (isMobile) {
             // 添加移动端菜单按钮
             if (!document.querySelector('.mobile-menu-btn')) {
@@ -482,7 +490,7 @@ function handleResponsive() {
             if (menuBtn) {
                 menuBtn.remove();
             }
-            
+
             // 确保侧边栏可见
             const sidebar = document.querySelector('.docs-sidebar');
             if (sidebar) {
@@ -490,18 +498,18 @@ function handleResponsive() {
             }
         }
     }
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
 }
 
 // 初始化响应式功能
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     handleResponsive();
 });
 
 // 添加键盘快捷键支持
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     // Ctrl/Cmd + K 打开搜索
     if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
@@ -509,7 +517,7 @@ document.addEventListener('keydown', function(e) {
         searchInput.focus();
         searchInput.select();
     }
-    
+
     // ESC 关闭移动端菜单
     if (e.key === 'Escape') {
         const sidebar = document.querySelector('.docs-sidebar');
