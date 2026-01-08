@@ -1,16 +1,16 @@
 // 文档页面交互脚本
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // 元素引用
     const sidebar = document.querySelector('.docs-sidebar');
     const mobileMenuBtn = document.getElementById('mobile-menu-toggle');
     const searchInput = document.getElementById('docs-search');
     const navLinks = document.querySelectorAll('.nav-link');
-    
+
     // 移动端侧边栏切换
     if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', function() {
+        mobileMenuBtn.addEventListener('click', function () {
             sidebar.classList.toggle('open');
-            
+
             // 更新按钮图标
             if (sidebar.classList.contains('open')) {
                 this.innerHTML = '✕';
@@ -21,19 +21,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+
     // 点击外部区域关闭侧边栏
-    document.addEventListener('click', function(e) {
-        if (window.innerWidth <= 768 && 
-            !sidebar.contains(e.target) && 
-            !mobileMenuBtn.contains(e.target) && 
+    document.addEventListener('click', function (e) {
+        if (window.innerWidth <= 768 &&
+            !sidebar.contains(e.target) &&
+            !mobileMenuBtn.contains(e.target) &&
             sidebar.classList.contains('open')) {
             sidebar.classList.remove('open');
             mobileMenuBtn.innerHTML = '☰';
             mobileMenuBtn.style.background = 'var(--accent-primary)';
         }
     });
-    
+
     // 高亮当前页面导航
     function highlightCurrentNav() {
         const currentPath = window.location.pathname;
@@ -44,26 +44,56 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+
     // 初始化导航高亮
     highlightCurrentNav();
-    
+
+    // 侧边栏导航链接点击事件 - 移动端点击后关闭侧边栏
+    document.querySelectorAll('.docs-nav .nav-link').forEach(link => {
+        link.addEventListener('click', function (e) {
+            // 在移动端关闭侧边栏
+            if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+                if (mobileMenuBtn) {
+                    mobileMenuBtn.innerHTML = '☰';
+                    mobileMenuBtn.style.background = 'var(--accent-primary)';
+                }
+            }
+
+            // 如果是锚点链接，处理平滑滚动
+            const href = this.getAttribute('href');
+            if (href && href.startsWith('#') && href.length > 1) {
+                e.preventDefault();
+                const targetId = href.substring(1);
+                const targetElement = document.getElementById(targetId);
+
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+            // 其他链接正常跳转（不阻止默认行为）
+        });
+    });
+
     // 搜索功能
     if (searchInput) {
         let searchTimeout;
-        searchInput.addEventListener('input', function() {
+        searchInput.addEventListener('input', function () {
             const query = this.value.toLowerCase().trim();
-            
+
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
                 filterNavigation(query);
             }, 300);
         });
     }
-    
+
     function filterNavigation(query) {
         const navSections = document.querySelectorAll('.nav-section');
-        
+
         if (!query) {
             // 显示所有导航项
             navSections.forEach(section => {
@@ -74,15 +104,15 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             return;
         }
-        
+
         navSections.forEach(section => {
             const sectionTitle = section.querySelector('.nav-section-title').textContent.toLowerCase();
             const navItems = section.querySelectorAll('.nav-item');
             let hasVisibleItems = false;
-            
+
             navItems.forEach(item => {
                 const linkText = item.querySelector('.nav-link').textContent.toLowerCase();
-                
+
                 if (linkText.includes(query) || sectionTitle.includes(query)) {
                     item.style.display = 'block';
                     hasVisibleItems = true;
@@ -90,19 +120,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     item.style.display = 'none';
                 }
             });
-            
+
             // 显示或隐藏整个区域
             section.style.display = hasVisibleItems ? 'block' : 'none';
         });
     }
-    
+
     // 平滑滚动
     document.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href').substring(1);
             const targetElement = document.getElementById(targetId);
-            
+
             if (targetElement) {
                 targetElement.scrollIntoView({
                     behavior: 'smooth',
@@ -111,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
     // 内容区域滚动监听，更新导航高亮
     const docsContent = document.querySelector('.docs-content');
     if (docsContent) {
@@ -126,10 +156,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }, {
             rootMargin: '-100px 0px -80% 0px'
         });
-        
+
         headings.forEach(heading => observer.observe(heading));
     }
-    
+
     // 代码复制功能
     const codeBlocks = document.querySelectorAll('pre code');
     codeBlocks.forEach(codeBlock => {
@@ -150,13 +180,13 @@ document.addEventListener('DOMContentLoaded', function() {
             cursor: pointer;
             transition: all 0.2s ease;
         `;
-        
-        copyBtn.addEventListener('click', function() {
+
+        copyBtn.addEventListener('click', function () {
             navigator.clipboard.writeText(codeBlock.textContent).then(() => {
                 this.textContent = '已复制!';
                 this.style.background = 'var(--accent-primary)';
                 this.style.color = 'white';
-                
+
                 setTimeout(() => {
                     this.textContent = '复制';
                     this.style.background = 'var(--bg-tertiary)';
@@ -164,13 +194,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 2000);
             });
         });
-        
+
         if (pre.style.position !== 'absolute') {
             pre.style.position = 'relative';
         }
         pre.appendChild(copyBtn);
     });
-    
+
     // 链接悬停效果
     document.querySelectorAll('.docs-content a').forEach(link => {
         if (!link.classList.contains('nav-link')) {
@@ -178,34 +208,34 @@ document.addEventListener('DOMContentLoaded', function() {
             link.style.textDecoration = 'none';
             link.style.borderBottom = '1px solid transparent';
             link.style.transition = 'border-color 0.2s ease';
-            
-            link.addEventListener('mouseenter', function() {
+
+            link.addEventListener('mouseenter', function () {
                 this.style.borderBottomColor = 'var(--accent-primary)';
             });
-            
-            link.addEventListener('mouseleave', function() {
+
+            link.addEventListener('mouseleave', function () {
                 this.style.borderBottomColor = 'transparent';
             });
         }
     });
-    
+
     // 窗口大小变化处理
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', function () {
         if (window.innerWidth > 768 && sidebar.classList.contains('open')) {
             sidebar.classList.remove('open');
             mobileMenuBtn.innerHTML = '☰';
             mobileMenuBtn.style.background = 'var(--accent-primary)';
         }
     });
-    
+
     // 键盘快捷键
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
         // Ctrl/Cmd + K 聚焦搜索框
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
             e.preventDefault();
             searchInput.focus();
         }
-        
+
         // ESC 键关闭移动端侧边栏或清空搜索
         if (e.key === 'Escape') {
             if (sidebar.classList.contains('open')) {
@@ -219,14 +249,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
+
     // 添加搜索快捷键提示
     if (searchInput) {
         const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
         const shortcutKey = isMac ? '⌘K' : 'Ctrl+K';
         searchInput.placeholder = `搜索文档... (${shortcutKey})`;
     }
-    
+
     // 页面加载完成后的初始化
     setTimeout(() => {
         // 添加页面加载动画
@@ -235,7 +265,7 @@ document.addEventListener('DOMContentLoaded', function() {
             el.style.opacity = '0';
             el.style.transform = 'translateY(20px)';
             el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            
+
             setTimeout(() => {
                 el.style.opacity = '1';
                 el.style.transform = 'translateY(0)';
