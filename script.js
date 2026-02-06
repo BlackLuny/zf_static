@@ -226,48 +226,83 @@ document.addEventListener('DOMContentLoaded', function() {
     installObserver.observe(installSection);
     
     // 移动端菜单切换
-    if (window.innerWidth <= 768) {
-        // 为小屏幕设备优化导航
-        const navLinks = document.querySelector('.nav-links');
-        let isMenuOpen = false;
-        
-        // 添加汉堡菜单按钮
-        const menuButton = document.createElement('button');
-        menuButton.innerHTML = '☰';
-        menuButton.style.cssText = `
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            cursor: pointer;
-            display: none;
-        `;
-        
-        if (window.innerWidth <= 768) {
-            menuButton.style.display = 'block';
-            navLinks.style.display = 'none';
-            document.querySelector('.nav-container').appendChild(menuButton);
+    const hamburger = document.querySelector('.hamburger-menu');
+    const navContainer = document.querySelector('.nav-links');
+    
+    if (hamburger && navContainer) {
+        // Toggle menu
+        hamburger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('active');
+            navContainer.classList.toggle('active');
             
-            menuButton.addEventListener('click', function() {
-                isMenuOpen = !isMenuOpen;
-                navLinks.style.display = isMenuOpen ? 'flex' : 'none';
-                
-                if (isMenuOpen) {
-                    navLinks.style.cssText = `
-                        position: absolute;
-                        top: 100%;
-                        left: 0;
-                        right: 0;
-                        background: var(--bg-primary);
-                        flex-direction: column;
-                        padding: var(--space-lg);
-                        border-top: 1px solid var(--border-color);
-                        display: flex;
-                    `;
+            // Prevent body scroll when menu is open
+            if (navContainer.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Close menu when clicking a link
+        const links = navContainer.querySelectorAll('a');
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navContainer.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (navContainer.classList.contains('active') && 
+                !navContainer.contains(e.target) && 
+                !hamburger.contains(e.target)) {
+                hamburger.classList.remove('active');
+                navContainer.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Close menu on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && navContainer.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                navContainer.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+    
+
+    // FAQ 手风琴效果
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        
+        question.addEventListener('click', () => {
+            // 关闭所有其他项
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item && otherItem.classList.contains('active')) {
+                    otherItem.classList.remove('active');
+                    const otherAnswer = otherItem.querySelector('.faq-answer');
+                    otherAnswer.style.maxHeight = null;
                 }
             });
-        }
-    }
+            
+            // 切换当前项
+            item.classList.toggle('active');
+            const answer = item.querySelector('.faq-answer');
+            
+            if (item.classList.contains('active')) {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+            } else {
+                answer.style.maxHeight = null;
+            }
+        });
+    });
     
     // 性能优化：节流滚动事件
     let ticking = false;
