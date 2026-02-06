@@ -277,7 +277,7 @@ body {
 /* 产品特性 */
 .features {
     padding: var(--space-3xl) 0;
-    background: var(--bg-secondary);
+    background: var(--bg-primary);
 }
 
 .section-title {
@@ -305,7 +305,7 @@ body {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
 }
 
 .feature-card::before {
@@ -357,7 +357,7 @@ body {
 /* 文档目录 */
 .docs {
     padding: var(--space-3xl) 0;
-    background: var(--bg-primary);
+    background: var(--bg-secondary);
 }
 
 .section-subtitle {
@@ -449,7 +449,7 @@ body {
 /* 安装区域 */
 .install {
     padding: var(--space-3xl) 0;
-    background: var(--bg-secondary);
+    background: var(--bg-primary);
 }
 
 .terminal {
@@ -532,7 +532,7 @@ body {
 
 /* 页脚 */
 .footer {
-    background: var(--bg-primary);
+    background: var(--bg-secondary);
     border-top: 1px solid var(--border-color);
     padding: var(--space-2xl) 0;
 }
