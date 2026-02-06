@@ -11,18 +11,21 @@
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-vs.min.css" rel="stylesheet">
 </head>
 <body>
     <!-- 顶部导航栏 -->
     <header class="navbar">
         <nav class="nav-container">
-            <div class="nav-logo">
-                <a href="index.html">
-                    <div class="logo-icon">Z</div>
-                    <span class="brand-name">Zero Forwarder</span>
-                </a>
-            </div>
+            <a href="index.html" class="nav-logo">
+                <div class="logo-icon">Z</div>
+                <span class="brand-name">Zero Forwarder</span>
+            </a>
+            <button class="hamburger-menu" aria-label="Toggle menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
             <div class="nav-links">
                 <a href="index.html#features" class="nav-link">产品特性</a>
                 <a href="docs.html" class="nav-link active">文档中心</a>
@@ -51,6 +54,10 @@
 
         <!-- 主内容区域 -->
         <main class="docs-main">
+            <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Toggle docs menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                <span>文档目录</span>
+            </button>
             <div class="docs-content">
                 <div id="markdown-content" class="markdown-body">
                     <!-- Markdown内容将在这里渲染 -->

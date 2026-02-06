@@ -116,6 +116,9 @@ function initDocsPage() {
     // 初始化搜索功能
     initSearch(docsConfig);
 
+    // 初始化移动端菜单
+    initMobileMenus();
+
     // 加载默认文档
     const defaultDoc = getDefaultDoc();
     loadDocument(defaultDoc.path, defaultDoc.title);
@@ -266,6 +269,54 @@ function initSearch(docsConfig) {
             }
         });
     });
+}
+
+function initMobileMenus() {
+    // 1. Main Navbar Hamburger
+    const hamburger = document.querySelector('.hamburger-menu');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (hamburger && navLinks) {
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            
+            // Toggle body scroll
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+            if (navLinks.classList.contains('active') && 
+                !navLinks.contains(e.target) && 
+                !hamburger.contains(e.target)) {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+
+    // 2. Docs Sidebar Toggle
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.querySelector('.docs-sidebar');
+    
+    if (sidebarToggle && sidebar) {
+        sidebarToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebar.classList.toggle('open');
+        });
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            if (sidebar.classList.contains('open') && 
+                !sidebar.contains(e.target) && 
+                !sidebarToggle.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        });
+    }
 }
 
 async function loadDocument(path, title) {
@@ -450,79 +501,32 @@ function getDefaultDoc() {
     };
 }
 
-// 移动端菜单功能
-function initMobileMenu() {
-    const menuBtn = document.querySelector('.mobile-menu-btn');
-    const sidebar = document.querySelector('.docs-sidebar');
-
-    if (menuBtn) {
-        menuBtn.addEventListener('click', function () {
-            sidebar.classList.toggle('open');
-        });
-
-        // 点击内容区域关闭菜单
-        document.addEventListener('click', function (e) {
-            if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
-                sidebar.classList.remove('open');
-            }
-        });
-    }
-}
-
-// 响应式处理
-function handleResponsive() {
-    function checkMobile() {
-        const isMobile = window.innerWidth <= 768;
-        const navLinks = document.querySelector('.nav-links');
-
-        if (isMobile) {
-            // 添加移动端菜单按钮
-            if (!document.querySelector('.mobile-menu-btn')) {
-                const menuBtn = document.createElement('button');
-                menuBtn.className = 'mobile-menu-btn';
-                menuBtn.innerHTML = '☰';
-                navLinks.appendChild(menuBtn);
-                initMobileMenu();
-            }
-        } else {
-            // 移除移动端菜单按钮
-            const menuBtn = document.querySelector('.mobile-menu-btn');
-            if (menuBtn) {
-                menuBtn.remove();
-            }
-
-            // 确保侧边栏可见
-            const sidebar = document.querySelector('.docs-sidebar');
-            if (sidebar) {
-                sidebar.classList.remove('open');
-            }
-        }
-    }
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-}
-
-// 初始化响应式功能
-document.addEventListener('DOMContentLoaded', function () {
-    handleResponsive();
-});
-
 // 添加键盘快捷键支持
 document.addEventListener('keydown', function (e) {
     // Ctrl/Cmd + K 打开搜索
     if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
         const searchInput = document.getElementById('search-input');
-        searchInput.focus();
-        searchInput.select();
+        if (searchInput) {
+            searchInput.focus();
+            searchInput.select();
+        }
     }
 
     // ESC 关闭移动端菜单
     if (e.key === 'Escape') {
         const sidebar = document.querySelector('.docs-sidebar');
-        if (sidebar) {
+        const hamburger = document.querySelector('.hamburger-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (sidebar && sidebar.classList.contains('open')) {
             sidebar.classList.remove('open');
+        }
+        
+        if (navLinks && navLinks.classList.contains('active')) {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+            document.body.style.overflow = '';
         }
     }
 });
