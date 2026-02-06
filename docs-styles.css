@@ -625,6 +625,35 @@ body {
 }
 
 /* 响应式设计 */
+.no-results {
+    padding: var(--space-xl) var(--space-md);
+    text-align: center;
+    color: var(--text-muted);
+    list-style: none;
+}
+
+.no-results-content {
+    background: var(--bg-tertiary);
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+    border: 1px dashed var(--border-color);
+    font-size: 0.9rem;
+}
+
+.nav-item, .nav-category {
+    transition: opacity 0.3s ease;
+}
+
+.nav-item[style*="display: block"], 
+.nav-category[style*="display: block"] {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 @media (max-width: 1200px) {
     .docs-container {
         grid-template-columns: var(--sidebar-width) 1fr;

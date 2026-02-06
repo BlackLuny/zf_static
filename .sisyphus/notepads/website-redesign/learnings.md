@@ -30,3 +30,16 @@
   - Added a dedicated "Docs Menu" button (`#sidebar-toggle`) visible only on mobile to toggle the documentation sidebar.
   - Updated `docs-script.js` to manage both toggles independently.
 - **CSS Specificity**: Encountered an issue where `display: none` on the sidebar toggle wasn't being overridden by the media query because the `display: flex` rule was missing inside the `@media` block. Fixed by explicitly adding it.
+
+## Task 6: Documentation Search Functionality
+- **Client-side Filtering**: Implemented real-time filtering of the document list by title.
+- **Search Logic**: 
+  - Listens to input events on `#search-input`.
+  - Filters `.nav-item` by matching search term against `data-title` (case-insensitive).
+  - Syncs `.nav-category` visibility based on whether they contain any visible items.
+- **UI/UX Enhancements**:
+  - Added "无结果" (No results) message when no matches are found.
+  - Implemented ESC key support to clear search and blur input.
+  - Added smooth fade-in animations for search results via CSS keyframes.
+- **Selector Precision**: When checking for visible items in a category, used `:not([style*="display: none"])` to correctly identify items that are visible either by default or explicitly via `display: block`.
+- **Playwright Verification**: Verified filtering, clearing, "no results" state, and keyboard shortcuts. Used `--config` flag to ensure Playwright uses the correct configuration and avoids conflicts with neighboring projects.

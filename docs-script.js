@@ -231,22 +231,33 @@ function initSidebar(docsConfig) {
 function initSearch(docsConfig) {
     const searchInput = document.getElementById('search-input');
     const navList = document.getElementById('nav-list');
+    
+    let noResults = document.getElementById('no-search-results');
+    if (!noResults) {
+        noResults = document.createElement('li');
+        noResults.id = 'no-search-results';
+        noResults.className = 'no-results';
+        noResults.innerHTML = '<div class="no-results-content">无结果</div>';
+        noResults.style.display = 'none';
+        navList.appendChild(noResults);
+    }
 
     searchInput.addEventListener('input', function (e) {
         const searchTerm = e.target.value.toLowerCase().trim();
 
         if (searchTerm === '') {
-            // 显示所有文档
             navList.querySelectorAll('.nav-item').forEach(item => {
                 item.style.display = 'block';
             });
             navList.querySelectorAll('.nav-category').forEach(category => {
                 category.style.display = 'block';
             });
+            noResults.style.display = 'none';
             return;
         }
 
-        // 搜索匹配的文档
+        let totalVisible = 0;
+
         navList.querySelectorAll('.nav-item').forEach(item => {
             const link = item.querySelector('.nav-link-item');
             const title = link.dataset.title.toLowerCase();
@@ -254,20 +265,36 @@ function initSearch(docsConfig) {
 
             if (title.includes(searchTerm) || docName.includes(searchTerm)) {
                 item.style.display = 'block';
+                totalVisible++;
             } else {
                 item.style.display = 'none';
             }
         });
 
-        // 隐藏空分类
         navList.querySelectorAll('.nav-category').forEach(category => {
-            const visibleItems = category.querySelectorAll('.nav-item[style="display: block"], .nav-item:not([style])');
+            const visibleItems = category.querySelectorAll('.nav-item:not([style*="display: none"])');
             if (visibleItems.length === 0) {
                 category.style.display = 'none';
             } else {
                 category.style.display = 'block';
             }
         });
+
+        if (totalVisible === 0) {
+            noResults.style.display = 'block';
+        } else {
+            noResults.style.display = 'none';
+        }
+    });
+
+    searchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            if (searchInput.value !== '') {
+                searchInput.value = '';
+                searchInput.dispatchEvent(new Event('input'));
+            }
+            searchInput.blur();
+        }
     });
 }
 
