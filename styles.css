@@ -1,21 +1,41 @@
-/* 全局样式 */
+/* 全局样式 - Light Theme Design System */
 :root {
-    /* 颜色定义 */
-    --bg-primary: #111827;
-    --bg-secondary: #1f2937;
-    --bg-tertiary: #374151;
-    --accent-primary: #38bdf8;
-    --accent-secondary: #2dd4bf;
-    --text-primary: #f8fafc;
-    --text-secondary: #cbd5e1;
-    --text-muted: #94a3b8;
-    --border-color: #374151;
-    --shadow-primary: rgba(56, 189, 248, 0.1);
-    --shadow-glow: rgba(56, 189, 248, 0.3);
+    /* 颜色定义 - Light Theme */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc; /* Slate 50 */
+    --bg-tertiary: #f1f5f9;  /* Slate 100 */
+    --bg-backdrop: rgba(255, 255, 255, 0.9);
+    
+    --accent-primary: #0ea5e9;   /* Sky 500 */
+    --accent-secondary: #06b6d4; /* Cyan 500 */
+    --accent-hover: #0284c7;     /* Sky 600 */
+    
+    --text-primary: #1e293b;   /* Slate 800 */
+    --text-secondary: #64748b; /* Slate 500 */
+    --text-muted: #94a3b8;     /* Slate 400 */
+    --text-inverted: #ffffff;
+    
+    --border-color: #e2e8f0;   /* Slate 200 */
+    --border-hover: #cbd5e1;   /* Slate 300 */
+    
+    /* 阴影层级 */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-primary: 0 4px 14px rgba(14, 165, 233, 0.25);
+    --shadow-glow: 0 0 20px rgba(14, 165, 233, 0.35);
     
     /* 字体 */
     --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+    
+    /* 排版系统 - Typography Scale */
+    --h1: clamp(2.5rem, 5vw, 4rem);
+    --h2: clamp(2rem, 4vw, 3rem);
+    --h3: clamp(1.5rem, 3vw, 2.25rem);
+    --h4: clamp(1.25rem, 2vw, 1.75rem);
+    --h5: 1.25rem;
+    --h6: 1rem;
     
     /* 间距 */
     --space-xs: 0.25rem;
@@ -31,6 +51,12 @@
     --radius-md: 0.5rem;
     --radius-lg: 0.75rem;
     --radius-xl: 1rem;
+    
+    /* 响应式断点 (仅作参考) */
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
 }
 
 * {
@@ -63,7 +89,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(17, 24, 39, 0.9);
+    background: var(--bg-backdrop);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-color);
     z-index: 1000;
@@ -133,9 +159,9 @@ body {
 }
 
 .cta-btn:hover {
-    background: var(--accent-secondary);
+    background: var(--accent-hover);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--shadow-glow);
+    box-shadow: var(--shadow-primary);
 }
 
 /* 英雄区域 */
@@ -163,9 +189,9 @@ body {
     width: 100%;
     height: 100%;
     background: 
-        radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(45, 212, 191, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(56, 189, 248, 0.05) 0%, transparent 50%);
+        radial-gradient(circle at 20% 80%, rgba(14, 165, 233, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(14, 165, 233, 0.05) 0%, transparent 50%);
     animation: float 6s ease-in-out infinite;
 }
 
@@ -181,14 +207,15 @@ body {
 }
 
 .hero-title {
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 700;
+    font-size: var(--h1);
+    font-weight: 800;
     line-height: 1.2;
     margin-bottom: var(--space-lg);
     background: linear-gradient(135deg, var(--text-primary), var(--accent-primary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    letter-spacing: -0.02em;
 }
 
 .hero-description {
@@ -218,18 +245,19 @@ body {
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
-    box-shadow: 0 4px 14px var(--shadow-primary);
+    box-shadow: var(--shadow-primary);
 }
 
 .btn-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px var(--shadow-glow);
+    box-shadow: var(--shadow-glow);
 }
 
 .btn-secondary {
     color: var(--accent-primary);
     padding: var(--space-md) var(--space-2xl);
-    border: 2px solid var(--accent-primary);
+    border: 2px solid var(--border-color);
+    background: white;
     border-radius: var(--radius-lg);
     text-decoration: none;
     font-weight: 600;
@@ -240,8 +268,9 @@ body {
 }
 
 .btn-secondary:hover {
-    background: var(--accent-primary);
-    color: white;
+    border-color: var(--accent-primary);
+    background: var(--bg-secondary);
+    color: var(--accent-primary);
     transform: translateY(-3px);
 }
 
@@ -252,11 +281,12 @@ body {
 }
 
 .section-title {
-    font-size: 2.5rem;
+    font-size: var(--h2);
     font-weight: 700;
     text-align: center;
     margin-bottom: var(--space-3xl);
     color: var(--text-primary);
+    letter-spacing: -0.02em;
 }
 
 .features-grid {
@@ -275,6 +305,7 @@ body {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    box-shadow: var(--shadow-sm);
 }
 
 .feature-card::before {
@@ -296,7 +327,7 @@ body {
 .feature-card:hover {
     transform: translateY(-5px);
     border-color: var(--accent-primary);
-    box-shadow: 0 10px 30px rgba(56, 189, 248, 0.1);
+    box-shadow: var(--shadow-lg);
 }
 
 .feature-icon {
@@ -312,7 +343,7 @@ body {
 }
 
 .feature-title {
-    font-size: 1.25rem;
+    font-size: var(--h4);
     font-weight: 600;
     margin-bottom: var(--space-md);
     color: var(--text-primary);
@@ -359,7 +390,8 @@ body {
 .search-box:focus {
     outline: none;
     border-color: var(--accent-primary);
-    box-shadow: 0 0 0 3px var(--shadow-primary);
+    background: var(--bg-primary);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
 }
 
 .search-box::placeholder {
@@ -375,18 +407,19 @@ body {
 }
 
 .doc-card {
-    background: var(--bg-secondary);
+    background: var(--bg-primary);
     padding: var(--space-2xl);
     border-radius: var(--radius-xl);
     border: 1px solid var(--border-color);
     transition: all 0.3s ease;
     cursor: pointer;
+    box-shadow: var(--shadow-sm);
 }
 
 .doc-card:hover {
     transform: translateY(-5px);
     border-color: var(--accent-primary);
-    box-shadow: 0 10px 30px rgba(56, 189, 248, 0.1);
+    box-shadow: var(--shadow-lg);
 }
 
 .doc-icon {
@@ -422,15 +455,15 @@ body {
 .terminal {
     max-width: 800px;
     margin: var(--space-2xl) auto 0;
-    background: var(--bg-primary);
+    background: #1e293b; /* Keep terminal dark for contrast */
     border-radius: var(--radius-xl);
     border: 1px solid var(--border-color);
     overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-lg);
 }
 
 .terminal-header {
-    background: var(--bg-tertiary);
+    background: #0f172a; /* Darker header */
     padding: var(--space-md) var(--space-lg);
     display: flex;
     align-items: center;
@@ -454,7 +487,7 @@ body {
 
 .terminal-title {
     font-size: 0.9rem;
-    color: var(--text-secondary);
+    color: #94a3b8;
     font-weight: 500;
 }
 
@@ -476,12 +509,12 @@ body {
 }
 
 .command {
-    color: var(--text-primary);
+    color: #f8fafc; /* Always light text in terminal */
     flex: 1;
 }
 
 .copy-btn {
-    background: var(--accent-primary);
+    background: rgba(255, 255, 255, 0.1);
     color: white;
     border: none;
     padding: var(--space-sm) var(--space-md);
@@ -493,7 +526,7 @@ body {
 }
 
 .copy-btn:hover {
-    background: var(--accent-secondary);
+    background: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
 }
 
