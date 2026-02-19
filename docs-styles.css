@@ -689,6 +689,10 @@ body {
     .docs-container {
         grid-template-columns: 1fr;
     }
+
+    .docs-main {
+        display: block;
+    }
     
     .docs-sidebar {
         position: fixed;
@@ -790,6 +794,7 @@ body {
         position: sticky;
         top: calc(var(--navbar-height) + var(--space-sm));
         margin: var(--space-md) var(--space-md) 0;
+        width: calc(100% - (var(--space-md) * 2));
         padding: var(--space-sm);
         border: 1px solid var(--border-color);
         border-radius: var(--radius-lg);
@@ -904,6 +909,7 @@ body {
 
     .mobile-reader-toolbar {
         margin: var(--space-sm);
+        width: calc(100% - (var(--space-sm) * 2));
         grid-template-columns: 1fr 1fr;
     }
 
