@@ -1,3 +1,22 @@
+// 支持 /docs/<slug>/ 形式的文档链接，统一跳转到 docs.html
+(function redirectDocsPrettyUrl() {
+    const pathname = window.location.pathname.replace(/\/+$/, '') || '/';
+    const isPrettyDocsPath = pathname.startsWith('/docs/') && pathname !== '/docs.html';
+    if (!isPrettyDocsPath) return;
+
+    const slug = pathname.split('/').filter(Boolean)[1] || '';
+    const slugMap = {
+        quickstart: 'install.md',
+        install: 'install.md',
+        readme: 'README.md',
+        intro: 'README.md',
+        config: 'config.md',
+        faq: 'faq.md'
+    };
+    const targetDoc = slugMap[slug] || 'README.md';
+    window.location.replace(`/docs.html#${targetDoc}`);
+})();
+
 // 平滑滚动导航
 document.addEventListener('DOMContentLoaded', function() {
     // 为所有导航链接添加平滑滚动
@@ -22,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // 导航栏滚动效果
-    let lastScrollTop = 0;
     const navbar = document.querySelector('.navbar');
     
     window.addEventListener('scroll', function() {
@@ -36,8 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
             navbar.style.background = 'rgba(17, 24, 39, 0.9)';
             navbar.style.backdropFilter = 'blur(12px)';
         }
-        
-        lastScrollTop = scrollTop;
     });
     
     // 复制安装命令功能
@@ -92,20 +108,20 @@ document.addEventListener('DOMContentLoaded', function() {
             // 根据卡片标题导航到对应页面
             switch (cardTitle) {
                 case '快速上手':
-                    window.location.href = 'docs/';
+                    window.location.href = '/docs.html#install.md';
                     break;
                 case '核心概念':
-                    window.location.href = 'docs/concepts/';
+                    window.location.href = '/docs.html#README.md';
                     break;
                 case '高级指南':
-                    window.location.href = 'docs/advanced/';
+                    window.location.href = '/docs.html#fwd_chain.md';
                     break;
                 case '配置参考':
-                    window.location.href = 'docs/reference/';
+                    window.location.href = '/docs.html#config.md';
                     break;
                 default:
                     // 默认跳转到文档首页
-                    window.location.href = 'docs.html';
+                    window.location.href = '/docs.html';
             }
         });
         
@@ -155,6 +171,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     searchBox.addEventListener('blur', function() {
         this.parentElement.style.transform = 'scale(1)';
+    });
+
+    searchBox.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            this.value = '';
+            this.blur();
+        }
     });
     
     // 按钮点击波纹效果
@@ -328,21 +351,6 @@ style.textContent = `
             transform: scale(4);
             opacity: 0;
         }
-    }
-    
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    .fade-in-up {
-        animation: fadeInUp 0.6s ease forwards;
     }
 `;
 

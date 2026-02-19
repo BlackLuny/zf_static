@@ -21,97 +21,113 @@ function initDocsPage() {
         {
             name: 'README.md',
             title: '项目介绍',
-            path: 'markdown/README.md',
+            path: '/markdown/README.md',
+            slug: 'readme',
             category: '开始使用'
         },
         {
             name: 'install.md',
             title: '安装指南',
-            path: 'markdown/install.md',
+            path: '/markdown/install.md',
+            slug: 'quickstart',
             category: '开始使用'
         },
         {
             name: 'config.md',
             title: '配置说明',
-            path: 'markdown/config.md',
+            path: '/markdown/config.md',
+            slug: 'config',
             category: '配置指南'
         },
         {
             name: 'faq.md',
             title: '常见问题',
-            path: 'markdown/faq.md',
+            path: '/markdown/faq.md',
+            slug: 'faq',
             category: '帮助支持'
         },
         {
             name: 'ix-guide.md',
             title: 'IX使用说明',
-            path: 'markdown/ix-guide.md',
+            path: '/markdown/ix-guide.md',
+            slug: 'ix-guide',
             category: '配置指南'
         },
         {
             name: 'halo-ix.md',
             title: 'Halo IX机器使用说明',
-            path: 'markdown/halo-ix.md',
+            path: '/markdown/halo-ix.md',
+            slug: 'halo-ix',
             category: '配置指南'
         },
         {
             name: 'bw_merge.md',
             title: '单线程带宽聚合',
-            path: 'markdown/bw_merge.md',
+            path: '/markdown/bw_merge.md',
+            slug: 'bw-merge',
             category: '配置指南'
         },
         {
             name: 'bandwidth_speed_limit.md',
             title: '带宽限速',
-            path: 'markdown/bandwidth_speed_limit.md',
+            path: '/markdown/bandwidth_speed_limit.md',
+            slug: 'bandwidth-speed-limit',
             category: '配置指南'
         },
         {
             name: 'fwd_chain.md',
             title: '动态多级转发链',
-            path: 'markdown/fwd_chain.md',
+            path: '/markdown/fwd_chain.md',
+            slug: 'fwd-chain',
             category: '配置指南'
         },
         {
             name: 'latency_test.md',
             title: '延迟Benchmark',
-            path: 'markdown/latency_test.md',
+            path: '/markdown/latency_test.md',
+            slug: 'latency-test',
             category: '配置指南'
         },
         {
             name: 'inbound_proxy.md',
             title: '入站代理配置指南',
-            path: 'markdown/inbound_proxy.md',
+            path: '/markdown/inbound_proxy.md',
+            slug: 'inbound-proxy',
             category: '配置指南'
         },
         {
             name: 'china_server.md',
             title: '国内机器最佳实践',
-            path: 'markdown/china_server.md',
+            path: '/markdown/china_server.md',
+            slug: 'china-server',
             category: '配置指南'
         },
         {
             name: 'global_cdn_config.md',
             title: '一机拉全球模式配置',
-            path: 'markdown/global_cdn_config.md',
+            path: '/markdown/global_cdn_config.md',
+            slug: 'global-cdn-config',
             category: '配置指南'
         },
         {
             name: 'jp_us_lan.md',
             title: '日本美国内网组网配置',
-            path: 'markdown/jp_us_lan.md',
+            path: '/markdown/jp_us_lan.md',
+            slug: 'jp-us-lan',
             category: '配置指南'
         },
         {
             name: 'multi_fallback_line.md',
             title: '多备用线路配置',
-            path: 'markdown/multi_fallback_line.md',
+            path: '/markdown/multi_fallback_line.md',
+            slug: 'multi-fallback-line',
             category: '配置指南'
         },
         {
             name: 'UNLOCK_TRAFFIC_ROUTING_GUIDE.md',
             title: '解锁服务配置与分流管理',
-            path: 'markdown/UNLOCK_TRAFFIC_ROUTING_GUIDE.md',
+            path: '/markdown/UNLOCK_TRAFFIC_ROUTING_GUIDE.md',
+            slug: 'unlock-traffic-routing-guide',
             category: '配置指南'
         }
     ];
@@ -126,7 +142,7 @@ function initDocsPage() {
     initMobileMenus();
 
     // 加载默认文档
-    const defaultDoc = getDefaultDoc();
+    const defaultDoc = getDefaultDoc(docsConfig);
     loadDocument(defaultDoc.path, defaultDoc.title);
 
     // 设置当前活动文档
@@ -209,7 +225,9 @@ function initSidebar(docsConfig) {
             setActiveNav(docName);
 
             // 更新URL
-            window.history.pushState({ path, title, docName }, title, `#${docName}`);
+            const docSlug = getDocSlugByName(docName, docsConfig);
+            const nextUrl = docSlug ? `/docs/${docSlug}/` : `/docs.html#${docName}`;
+            window.history.pushState({ path, title, docName }, title, nextUrl);
 
             // 移动端关闭侧边栏
             if (window.innerWidth <= 768) {
@@ -227,7 +245,7 @@ function initSidebar(docsConfig) {
             loadDocument(e.state.path, e.state.title);
             setActiveNav(e.state.docName);
         } else {
-            const defaultDoc = getDefaultDoc();
+            const defaultDoc = getDefaultDoc(docsConfig);
             loadDocument(defaultDoc.path, defaultDoc.title);
             setActiveNav(defaultDoc.name);
         }
@@ -512,7 +530,21 @@ function setActiveNav(docName) {
     }
 }
 
-function getDefaultDoc() {
+function getDefaultDoc(docsConfig) {
+    // 优先解析 /docs/<slug>/ 形式路径
+    const pathMatch = window.location.pathname.match(/^\/docs\/([^/]+)\/?$/i);
+    if (pathMatch && pathMatch[1]) {
+        const targetSlug = pathMatch[1].toLowerCase();
+        const docBySlug = docsConfig.find(doc => doc.slug === targetSlug);
+        if (docBySlug) {
+            return {
+                name: docBySlug.name,
+                path: docBySlug.path,
+                title: docBySlug.title
+            };
+        }
+    }
+
     // 检查URL中是否有指定的文档
     const hash = window.location.hash.slice(1);
     if (hash) {
@@ -529,9 +561,14 @@ function getDefaultDoc() {
     // 返回默认文档
     return {
         name: 'README.md',
-        path: 'markdown/README.md',
+        path: '/markdown/README.md',
         title: '项目介绍'
     };
+}
+
+function getDocSlugByName(docName, docsConfig) {
+    const matchedDoc = docsConfig.find(doc => doc.name === docName);
+    return matchedDoc ? matchedDoc.slug : '';
 }
 
 // 添加键盘快捷键支持
