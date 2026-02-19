@@ -55,6 +55,15 @@
 
         <!-- 主内容区域 -->
         <main class="docs-main">
+            <div class="mobile-reader-toolbar">
+                <button id="mobile-docs-button" class="mobile-toolbar-btn" aria-label="打开文档列表">
+                    <span>文档列表</span>
+                </button>
+                <button id="mobile-toc-button" class="mobile-toolbar-btn" aria-label="打开当前页目录">
+                    <span>本页目录</span>
+                </button>
+                <div class="mobile-current-doc" id="mobile-current-doc">加载中...</div>
+            </div>
             <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Toggle docs menu">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                 <span>文档目录</span>
@@ -67,6 +76,7 @@
                         <p>加载中...</p>
                     </div>
                 </div>
+                <nav class="mobile-doc-pagination" id="mobile-doc-pagination"></nav>
             </div>
             
             <!-- 目录 -->
@@ -80,6 +90,7 @@
             </aside>
         </main>
     </div>
+    <div class="mobile-panel-backdrop" id="mobile-panel-backdrop"></div>
 
     <script src="/docs-script.js"></script>
 </body>
