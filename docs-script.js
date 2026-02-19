@@ -107,6 +107,12 @@ function initDocsPage() {
             title: '多备用线路配置',
             path: 'markdown/multi_fallback_line.md',
             category: '配置指南'
+        },
+        {
+            name: 'UNLOCK_TRAFFIC_ROUTING_GUIDE.md',
+            title: '解锁服务配置与分流管理',
+            path: 'markdown/UNLOCK_TRAFFIC_ROUTING_GUIDE.md',
+            category: '配置指南'
         }
     ];
 
