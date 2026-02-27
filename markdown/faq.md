@@ -30,6 +30,24 @@
 timedatectl status
 ```
 
+### Q: 为什么磁盘空间越来越少？
+
+**A:** 常见原因是 Docker 容器日志未做轮转，`json-file` 日志会持续增长。请配置日志自动清理：
+```bash
+mkdir -p /etc/docker
+cat >/etc/docker/daemon.json <<'EOF'
+{
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "20m",
+    "max-file": "5"
+  }
+}
+EOF
+systemctl restart docker
+```
+这会将单个日志文件限制为 20MB，并最多保留 5 个滚动文件。
+
 ## 配置相关
 
 ### Q: 配置文件在哪里？

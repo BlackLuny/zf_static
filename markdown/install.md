@@ -90,6 +90,24 @@
 apt-get install docker.io
 apt-get install docker-compose
 ```
+- **必须配置 Docker 日志自动清理（强烈建议）**，否则容器日志会持续增长并占满磁盘：
+```bash
+mkdir -p /etc/docker
+cat >/etc/docker/daemon.json <<'EOF'
+{
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "20m",
+    "max-file": "5"
+  }
+}
+EOF
+systemctl restart docker
+```
+可用以下命令确认已生效：
+```bash
+docker info | grep -i "Logging Driver"
+```
 - 准备一个目录，专门用来安装，比如/root/zfc
 ```bash
 mkdir -p /root/zfc
