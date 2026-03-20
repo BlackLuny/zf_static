@@ -11,7 +11,19 @@
         readme: 'README.md',
         intro: 'README.md',
         config: 'config.md',
-        faq: 'faq.md'
+        faq: 'faq.md',
+        'ix-guide': 'ix-guide.md',
+        'halo-ix': 'halo-ix.md',
+        'bw-merge': 'bw_merge.md',
+        'bandwidth-speed-limit': 'bandwidth_speed_limit.md',
+        'fwd-chain': 'fwd_chain.md',
+        'latency-test': 'latency_test.md',
+        'inbound-proxy': 'inbound_proxy.md',
+        'china-server': 'china_server.md',
+        'global-cdn-config': 'global_cdn_config.md',
+        'jp-us-lan': 'jp_us_lan.md',
+        'multi-fallback-line': 'multi_fallback_line.md',
+        'unlock-traffic-routing-guide': 'UNLOCK_TRAFFIC_ROUTING_GUIDE.md'
     };
     const targetDoc = slugMap[slug] || 'README.md';
     window.location.replace(`/docs.html#${targetDoc}`);
